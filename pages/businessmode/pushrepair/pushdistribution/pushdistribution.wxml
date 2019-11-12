@@ -1,0 +1,17 @@
+<!--pages/businessmode/pushrepair/pushdistribution/pushdistribution.wxml-->
+<view class="topbg"></view>
+<view class="search-box">
+  <image src="/images/home-search.png"></image>
+  <view style="color:#b9b9b9">请输入作业员姓名</view>
+</view>
+<view>
+  <form bindsubmit="submitdistribution">
+    <radio-group class="radiogroup" name="radiogroup">
+      <view wx:for="{{taskslist}}" wx:key="" class="distributionitem">
+        <label>{{item.nickname}}</label>
+        <radio value="{{item.id}}"></radio>
+      </view>
+    </radio-group>
+    <button class="btn" formType="submit">确 认</button>
+  </form>
+</view>

@@ -1,0 +1,19 @@
+<!--pages/login/login.wxml-->
+<view class="container">
+  <image src="/images/logo@2x.png" class="logo"></image>
+  <text>车豆作业端</text>
+  <form bindsubmit="formSubmit">
+    <view class="user-mode">
+      <image src="/images/userIcon.png"></image>
+      <input type="number" name="phone" placeholder='请输入您的帐号' value='{{phone}}'></input>
+    </view>
+    <view class="user-mode">
+      <image src="/images/psw.png"></image>
+      <input type="text" name="psw" placeholder='请输入您的密码' value='{{psw}}' password="true"></input>
+    </view>
+    <view class="forget" bindtap='toeditPsw'>忘记密码</view>
+    <button form-type='submit' wx:if="{{islogin}}">登录</button>
+    <button wx:else>登录中...</button>
+  </form>
+
+</view>

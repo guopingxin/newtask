@@ -1,0 +1,148 @@
+/* pages/home/home.wxss */
+
+.topbg {
+  width: 100%;
+  height: 130rpx;
+  background: #1a65ff;
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  border-bottom-left-radius: 50rpx;
+  border-bottom-right-radius: 50rpx;
+}
+
+.datatext {
+  display: flex;
+  width: 96%;
+  justify-content: space-between;
+  color: white;
+  margin: 6rpx 2% 0 2%;
+  align-items: flex-end;
+}
+
+.detailtext {
+  font-size: 24rpx;
+}
+
+.taskmode {
+  width: 90%;
+  margin: 24rpx 5% 24rpx 5%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.task-num {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 29%;
+  height: 190rpx;
+  background: white;
+  border-radius: 20rpx;
+  border: 1rpx solid rgba(216, 216, 216, 0.5);
+  font-size: 28rpx;
+}
+
+.font {
+  font-size: 60rpx;
+  font-family: PingFangSC-Semibold, sans-serif;
+  margin-bottom: 10rpx;
+}
+
+.tasklisttitle {
+  margin: 10rpx 2%;
+  display: flex;
+  align-items: center;
+  /* width: 100rpx; */
+  position: relative;
+}
+
+.selectedtitle{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: PingFangSC-Semibold, sans-serif;
+  font-size: 34rpx;
+}
+
+.fonts{
+  font-size: 28rpx !important;
+}
+
+.line{
+  width: 40rpx;
+  height: 10rpx;
+  background: #ffa050;
+  border-radius: 50rpx;
+}
+
+.sanjiao {
+  width: 0;
+  height: 0;
+  border-right: 11rpx solid transparent;
+  border-left: 11rpx solid transparent;
+  border-top: 13rpx solid black;
+  margin: 5rpx 30rpx 0 10rpx;
+}
+
+.sanjiao1{
+  width:0;
+  height:0;
+	border-right:11rpx solid transparent;
+	border-left:11rpx solid transparent;
+	border-bottom:13rpx solid black;
+  margin-right: 30rpx;
+}
+
+.add{
+  width: 60rpx;
+  height: 60rpx;
+  position: absolute;
+  right: 3%;
+  top: -6rpx;
+}
+
+.businessmode{
+  width: 100%;
+  display: flex;
+  flex-wrap:wrap;
+  background: #efefef;
+  /* justify-content: space-between; */
+  padding-left:2%;
+  padding-top: 2%;
+  font-size: 30rpx;
+  position: absolute;
+  z-index: 10;
+}
+
+.businessmode_item{
+  width: 22.5%;
+  background: white;
+  border-radius: 10rpx;
+  border: 1rpx solid rgba(216, 216, 216, 0.5);
+  padding: 14rpx 0;
+  text-align: center;
+  margin-right: 2.5%;
+  margin-bottom: 2%;
+}
+
+.nullorder{
+  width: 94%;
+  margin: 6% 3%;
+  display: flex;
+  justify-content: center;
+}
+
+.nullorder image{
+  width: 300rpx;
+  height: 300rpx;
+}
+
+.tasklist{
+  width: 94%;
+  margin: 3% 3%;
+  border: 1rpx solid rgba(236, 236, 236, 0.5);
+  box-shadow: 0 0 4rpx 2rpx rgba(236, 236, 236, 0.5);
+  border-radius: 20rpx;
+}

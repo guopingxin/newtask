@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "frame-mode":"/components/framemode/framemode"
+  },
+  "navigationBarTitleText": "疾病调查"
+}

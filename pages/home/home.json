@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "作业端",
+  "usingComponents": {
+    "task-list": "/components/tasklist/tasklist"
+  }
+}

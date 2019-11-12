@@ -1,0 +1,34 @@
+<!--pages/mobilePsw/mobilePsw.wxml-->
+<view class="title">忘记密码</view>
+
+<view class="formmode">
+  <form bindsubmit='submitpsw'>
+    <view class="item">
+      <view class="telimg">
+        <image src='/images/icon_shouji@2x.png'></image>
+      </view>
+      <input type="number" placeholder="请输入您的手机号" name="mobile" placeholder-class="placeholder" bindinput='getPhone'></input>
+    </view>
+    <view class="item">
+      <view class="telimg">
+        <image src='/images/icon_yanzhengma@2x.png'></image>
+      </view>
+      <input type="number" placeholder="输入的验证码" name="code" placeholder-class="placeholder"></input>
+      <text bindtap="getCode">{{code}}</text>
+    </view>
+    <view class="item">
+      <view class="telimg">
+        <image src='/images/icon_password1@2x.png'></image>
+      </view>
+      <input type="text" placeholder="请设置您的登录密码" name="psw1" placeholder-class="placeholder" password="true"></input>
+    </view>
+    <view class="item">
+      <view class="telimg">
+        <image src='/images/icon_password1@2x.png'></image>
+      </view>
+      <input type="text" placeholder="再次输入您的登录密码" name="psw2" placeholder-class="placeholder" password="true"></input>
+    </view>
+
+    <button form-type='submit'>确定</button>
+  </form>
+</view>

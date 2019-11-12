@@ -1,0 +1,139 @@
+<!--pages/businessmode/pushrepair/pushrepair.wxml-->
+<view class="container">
+  <view class="title">
+    <view>业务基本信息</view>
+    <view class="dotmode" bindtap='openModal'>
+      <view class="dot"></view>
+      <view class="dot"></view>
+      <view class="dot"></view>
+    </view>
+  </view>
+  <view class="base-infor">
+    <view class="item-text">
+      <text>业务编号</text>
+      <text>{{push.push_no}}</text>
+    </view>
+    <view class="item-text">
+      <text>车型</text>
+      <text>{{push.series}}</text>
+    </view>
+    <view class="item-text">
+      <text>联系人</text>
+      <text>{{push.recognizee}}</text>
+    </view>
+    <view class="item-text">
+      <text>联系电话</text>
+      <text>{{push.mobile}}</text>
+    </view>
+    <view class="item-text">
+      <text>车牌号</text>
+      <text>{{push.car_no}}</text>
+    </view>
+    <view class="item-text">
+      <text>业务状态</text>
+      <text>奥迪</text>
+    </view>
+  </view>
+
+
+  <view class="title">
+    <view>推修基本信息</view>
+  </view>
+  <view class="base-infor">
+    <view class="item-text" wx:if="{{push.report_no}}">
+      <text>报案号</text>
+      <text>{{push.report_no}}</text>
+    </view>
+    <view class="item-text" wx:if="{{service.short_name}}">
+      <text>推修服务商</text>
+      <text>{{service.short_name}}</text>
+    </view>
+    <view class="item-text">
+      <text>推修状态</text>
+      <text wx:if="{{push.status == 0}}">待审核</text>
+      <text wx:elif="{{push.status == 1}}">审核失败</text>
+      <text wx:elif="{{push.status == 2}}">审核成功</text>
+      <text wx:elif="{{push.status == 3}}">已分配</text>
+      <text wx:elif="{{push.status == 4}}">进行中</text>
+      <text wx:elif="{{push.status == 5}}">已取消</text>
+      <text wx:elif="{{push.status == 6}}">'已完成</text>
+      <text wx:elif="{{push.status == 7}}">已删除</text>
+    </view>
+    <view class="item-text" wx:if="{{task.nickname}}">
+      <text>推修人</text>
+      <text>{{task.nickname}}</text>
+    </view>
+    <view class="item-text" wx:if="{{task.mobile}}">
+      <text>联系电话</text>
+      <text>{{task.mobile}}</text>
+    </view>
+    <view class="item-text" wx:if="{{push.created_at}}">
+      <text>添加时间</text>
+      <text>{{push.created_at}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{progress.length == 0}}" style="margin-bottom:160rpx">
+    <view class="title">反馈结果</view>
+    <view class="fankuiresult">
+      <view>未反馈</view>
+      <view>推修成功</view>
+      <view>推修失败</view>
+      <view>不确定</view>
+    </view>
+  </view>
+  <view wx:else>
+    <view class="title">反馈结果</view>
+    <view class="fankuiresult">
+      <block wx:for="{{pushresult}}" wx:key="">
+        <view wx:if="{{push.result == index}}" style="background:#1a65ff;color:#fff">{{item}}</view>
+        <view wx:else style="background:#e5e5e5;color:#848484">{{item}}</view>
+      </block>
+    </view>
+  </view>
+
+  <view wx:if="{{progress.length>0}}" class="push-progress">
+    <view class="title">进度</view>
+    <view class="base-infor">
+      <progress-item progress="{{progress}}" />
+    </view>
+  </view>
+</view>
+
+<view class="jiedan" wx:if="{{push.status == 3}}" bindtap="submitorder">
+  <view class="linewhole">
+    <view class="line"></view>
+    <view class="line"></view>
+    <view class="line"></view>
+  </view>
+  <view>接单</view>
+</view>
+
+
+<view class="inprogress-whole" wx:if="{{push.status == 4 && usertype == 1}}">
+  <view class='progress-bottom border'>
+    <view class="linewhole">
+      <view class="line"></view>
+      <view class="line"></view>
+      <view class="line"></view>
+    </view>
+    <view>添加进度</view>
+  </view>
+  <view class="progress-bottom"  bindtap="distribution">
+    <view class="linewhole">
+      <view class="line"></view>
+      <view class="line"></view>
+      <view class="line"></view>
+    </view>
+    <view>分配作业员</view>
+  </view>
+</view>
+
+<view class="jiedan" wx:if="{{push.status == 4 && usertype == 0}}">
+  <view class="linewhole">
+    <view class="line"></view>
+    <view class="line"></view>
+    <view class="line"></view>
+  </view>
+  <view>添加进度</view>
+</view>

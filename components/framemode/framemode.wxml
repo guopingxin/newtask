@@ -1,0 +1,7 @@
+  <view class="whole" hidden="{{giveup}}">
+    <view class="backlogin-box" animation="{{animationData}}">
+      <view class="backlogin">是否放弃申领?</view>
+      <view class="backlogin border"  bindtap="cancel" data-sure="1">是</view>
+      <view class="backlogin border1" bindtap="cancel" data-sure="0">否</view>
+    </view>
+  </view>

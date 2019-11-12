@@ -1,0 +1,26 @@
+<!--pages/mine/personalcenter/personalcenter.wxml-->
+<view class="container">
+  <form bindsubmit="submitinfor" class="form">
+    <view class="useritem margin">
+      <text>头像</text>
+      <image src="{{headimg}}" class="head-img"  catchtap="chooseimg"></image>
+      <image src="/images/icon_Arrow@2x.png" class="arrows_right" catchtap="chooseimg"></image>
+    </view>
+
+    <view class="useritem">
+      <text>昵称</text>
+      <input type="text" name="name" class="nickname" bindtap="setusername" value="{{name}}" disabled="true"></input>
+      <image src="/images/icon_Arrow@2x.png" class="arrows_right" bindtap="setusername"></image>
+    </view>
+
+    <view class="useritem">
+      <text>账号</text>
+      <input type="text" name="company" value="{{userinfor.mobile}}" disabled="true"></input>
+    </view>
+
+    <button class="sure" form-type="submit" wx:if="{{showimg}}">确定</button>
+    <button class="sure" wx:else>确定</button>
+  </form> 
+</view>
+
+

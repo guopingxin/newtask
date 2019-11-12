@@ -1,0 +1,234 @@
+<!--查勘定损详情-->
+<view class="survey-details-body">
+  <!-- 业务基本信息 -->
+  <view class="business" style="{{schedule.length == 0 ? 'padding-bottom: 104rpx' : ''}}">
+    <view class="business-title">
+      <text>业务基本信息</text>
+      <i-icon color="#1a65ff" type="more" bindtap="operation" size="24" />
+    </view>
+    <view class="business-content">
+      <view class="business-item">
+        <text>业务编号</text>
+        <text>{{surveyList.survey_no}}</text>
+      </view>
+      <view class="business-item">
+        <text>保险公司</text>
+        <text>{{surveyList.insuranceName}}</text>
+      </view>
+      <view class="business-item">
+        <text>查勘员</text>
+        <text>xx</text>
+      </view>
+      <view class="business-item" wx:if="{{isJobNo}}">
+        <text>工号</text>
+        <text>S15</text>
+      </view>
+      <!-- 查勘日期(平安有) -->
+      <view class="business-item" wx:if="{{isSurveyTime}}">
+        <text>查勘日期</text>
+        <text>{{surveyList.survey_date}}</text>
+      </view>
+      <!-- 派工人(平安、太平都没有) -->
+      <view class="business-item" wx:if="{{isDispatchedWorkers}}">
+        <text>派工人</text>
+        <text>{{surveyList.send_user}}</text>
+      </view>
+      <view class="business-item">
+        <text>案件号</text>
+        <text>{{surveyList.report_no}}</text>
+      </view>
+      <!-- 车牌号 -->
+      <view class="business-item">
+        <text>车牌号码</text>
+        <text>{{surveyList.car_no}}</text>
+      </view>
+      <!-- 任务类型 -->
+      <view class="business-item">
+        <text>任务类型</text>
+        <text>{{surveyList.task_type}}</text>
+      </view>
+      <!-- 派工时间(太平没有) -->
+      <view class="business-item" wx:if="{{isDispatchingTime}}">
+        <text>派工时间</text>
+        <text>{{surveyList.send_time}}</text>
+      </view>
+      <!-- 报案时间（太平有） -->
+      <view class="business-item" wx:if="{{isReportTime}}">
+        <text>报案时间</text>
+        <text>{{surveyList.report_date}}</text>
+      </view>
+      <!-- 出险/定损地点（平安、太平有） -->
+      <view class="business-item" wx:if="{{isFixedLossAdd}}">
+        <text>出险/定损地点</text>
+        <text>{{surveyList.survey_address}}</text>
+      </view>
+      <!-- 案件类型（太平有） -->
+      <view class="business-item" wx:if="{{isreportType}}">
+        <text>案件类型</text>
+        <text>{{surveyList.case_type}}</text>
+      </view>
+      <!-- 区域（太平没有） -->
+      <view class="business-item" wx:if="{{isRegion}}">
+        <text>区域</text>
+        <text>{{surveyList.are}}</text>
+      </view>
+      <!-- 派工时间段（平安有） -->
+      <view class="business-item" wx:if="{{isTimeSlot}}">
+        <text>派工时间段</text>
+        <text>{{surveyList.send_date}}</text>
+      </view>
+      <!-- 保单号(太平、平安没有) -->
+      <view class="business-item" wx:if="{{isPolicyNo && surveyList.policy_no}}">
+        <text>保单号</text>
+        <text>{{surveyList.policy_no}}</text>
+      </view>
+      <!-- 承保机构(太平、平安没有) -->
+      <view class="business-item" wx:if="{{isPolicyMechanism && surveyList.ins_org}}">
+        <text>承保机构</text>
+        <text>{{surveyList.ins_org}}</text>
+      </view>
+      <view class="business-item">
+        <text>状态</text>
+        <text wx:if='{{surveyList.status==0}}'>待审核</text>
+        <text wx:if='{{surveyList.status==1}}'>审核失败</text>
+        <text wx:if='{{surveyList.status==2}}'>审核成功</text>
+        <text wx:if='{{surveyList.status==3}}'>已分配</text>
+        <text wx:if='{{surveyList.status==4}}'>进行中</text>
+        <text wx:if='{{surveyList.status==5}}'>已取消</text>
+        <text wx:if='{{surveyList.status==6}}'>已完成</text>
+      </view>
+      <view class="business-item" wx:if="{{surveyList.status > 3}}">
+        <text>评价</text>
+        <text class="business-item-code" bindtap="showQrCode" wx:if="{{surveyList.comment == 0}}">二维码</text>
+        <text wx:if="{{surveyList.comment == 1}}">已评价</text>
+      </view>
+    </view>
+  </view>
+  <!-- 进度 -->
+  <view class="progress" wx:if="{{schedule.length !== 0}}">
+    <view class="progress-title">进度</view>
+    <view class="progress-content">
+      <view class="progress-item" wx:for="{{schedule}}" wx:key="">
+        <view class="progress-left">
+          <image src="/images/icon_light.png"></image>
+        </view>
+        <!-- <view class="progress-right">
+          <text>{{item.title}}</text>
+          <text>{{item.date}}</text>
+          <view class="progress-image" wx:if="{{item.picture}}">
+            <view class="progress-image-item" >
+              <image src=""></image>
+            </view>
+          </view>
+        </view> -->
+        <view class="progress-right">
+          <text>{{item.title}}</text>
+          <text>{{item.date}}</text>
+          <view class="progress-image" wx:if="{{item.picture}}">
+            <view class="progress-image-item" wx:for="{{item.picture.ckzp}}" wx:for-item="ckzpitem">
+              <image src="{{imgUrl}}{{ckzpitem}}"></image>
+            </view>
+            <view class="progress-image-item" wx:for="{{item.picture.gydz}}" wx:for-item="gydzitem">
+              <image src="{{imgUrl}}{{gydzitem}}"></image>
+            </view>
+            <view class="progress-image-item" wx:for="{{item.picture.zfdz}}" wx:for-item="zfdzitem">
+              <image src="{{imgUrl}}{{zfdzitem}}"></image>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 明细 -->
+  <view class="progress">
+    <view class="progress-title">明细</view>
+        <view class="progress-content">
+      <view class="progress-item" wx:for="{{detailedlist}}" wx:key="">
+        <view class="progress-left">
+          <image src="/images/icon_light.png"></image>
+        </view>
+        <view class="progress-right">
+          <text>{{item.title}}</text>
+          <text>{{item.date}}</text>
+          <view class="progress-image" wx:if="{{item.picture}}">
+            <view class="progress-image-item" wx:for="{{item.picture.ckzp}}" wx:for-item="ckzpitem">
+              <image src="{{imgUrl}}{{ckzpitem}}"></image>
+            </view>
+            <view class="progress-image-item" wx:for="{{item.picture.gydz}}" wx:for-item="gydzitem">
+              <image src="{{imgUrl}}{{gydzitem}}"></image>
+            </view>
+            <view class="progress-image-item" wx:for="{{item.picture.zfdz}}" wx:for-item="zfdzitem">
+              <image src="{{imgUrl}}{{zfdzitem}}"></image>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+
+
+  <!-- 操作按钮 -->
+  <view class="operation algin" wx:if="{{surveyList.status < 4}}" bindtap="toReceipt">
+    <i-icon class="icon" type="keyboard" size="22" color="#eeeeee" />
+    <text>接单</text>
+  </view>
+  <view class="operation" wx:if="{{!serviceOperation && surveyList.status == 4}}">
+    <view class="operation-item" bindtap="toScene">
+      <i-icon class="icon" type="keyboard" size="22" color="#eeeeee" />
+      <text>到达现场</text>
+    </view>
+    <view class="operation-item" bindtap="toAssignmentTask"  wx:if="{{usertype == 1}}">
+      <i-icon class="icon" type="keyboard" size="22" color="#eeeeee" />
+      <text>分配作业员</text>
+    </view>
+    <view class="operation-item" wx:if="{{surveyList.is_push == 0 && surveyList.type == 0}}" bindtap="toPush">
+      <i-icon class="icon" type="keyboard" size="22" color="#eeeeee" />
+      <text>推修</text>
+    </view>
+    <view class="operation-item" wx:if="{{surveyList.is_push == 1 && surveyList.type == 0}}">
+      <i-icon class="icon" type="keyboard" size="22" color="#eeeeee" />
+      <text>已推修</text>
+    </view>
+  </view>
+  <view class="operation" wx:if="{{serviceOperation && surveyList.status == 4}}">
+    <view class="operation-item" bindtap="toAddDetails">
+      <i-icon class="icon" type="keyboard" size="22" color="#eeeeee" />
+      <text>添加明细</text>
+    </view>
+    <view class="operation-item" bindtap="toFinishCase">
+      <i-icon class="icon" type="keyboard" size="22" color="#eeeeee" />
+      <text>结案</text>
+    </view>
+    <view class="operation-item" wx:if="{{surveyList.is_push == 0 && surveyList.type == 0}}" bindtap="toPush">
+      <i-icon class="icon" type="keyboard" size="22" color="#eeeeee" />
+      <text>推修</text>
+    </view>
+    <view class="operation-item" wx:if="{{surveyList.is_push == 1 && surveyList.type == 0}}">
+      <i-icon class="icon" type="keyboard" size="22" color="#eeeeee" />
+      <text>已推修</text>
+    </view>
+  </view>
+  <view class="operation" wx:if="{{serviceOperation && surveyList.status == 6}}">
+    <view class="operation-item" bindtap="toAddDetails">
+      <i-icon class="icon" type="keyboard" size="22" color="#eeeeee" />
+      <text>添加明细</text>
+    </view>
+    <view class="operation-item" wx:if="{{surveyList.is_push == 0 && surveyList.type == 0}}" bindtap="toPush">
+      <i-icon class="icon" type="keyboard" size="22" color="#eeeeee" />
+      <text>推修</text>
+    </view>
+    <view class="operation-item" wx:if="{{surveyList.is_push == 1 && surveyList.type == 0}}">
+      <i-icon class="icon" type="keyboard" size="22" color="#eeeeee" />
+      <text>已推修</text>
+    </view>
+  </view>
+  <view class="operation algin" wx:if="{{surveyList.status == 4 && surveyList.task_id != userid }}">
+    <text>已分配作业员</text>
+  </view>
+</view>
+<!-- 底部操作按钮 -->
+<bottom-modal isShow="{{showBottomOperation}}" status="{{surveyList.status}}" bind:editEvent="editEvent" bind:deleteEvent="deleteEvent" bind:cancelEvent="cancelEvent"/>
+<!-- 评价二维码 -->
+<qr-code isShow="{{showQrCode}}" erweimaimgUrl="{{erweimaimgUrl}}" />

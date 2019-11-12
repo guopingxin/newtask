@@ -1,0 +1,27 @@
+<!--pages/businessmode/pushrepair/addpushcar/addpushcar.wxml-->
+<view class="container">
+  <form bindsubmit="addpushcase">
+    <view class="addpushitem">
+      <text>联系人</text>
+      <input type="text" name="username" placeholder="请输入客户姓名"></input>
+    </view>
+    <view class="addpushitem">
+      <text>联系电话</text>
+      <input type="text" name="phone" placeholder="请输入联系电话"></input>
+    </view>
+    <view class="addpushitem">
+      <text>车牌号</text>
+      <input type="text" name="carnum" placeholder="请输入车牌号"></input>
+    </view>
+    <view class="addpushitem">
+      <text>车型</text>
+      <input type="text" name="carmode" placeholder="请选择车型" disabled="true"  bindtap="onselectedcar" value="{{carmode}}"></input>
+    </view>
+    <view class="beizhu">
+      <text>备注</text>
+      <textarea name='beizhu'></textarea>
+    </view>
+
+    <button formType="submit" class="btn-add">添加</button>
+  </form>
+</view>

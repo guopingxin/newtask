@@ -1,0 +1,7 @@
+<view wx:for="{{progress}}" wx:key="" class="progress">
+  <view class="circle"></view>
+  <view class="progress-content">
+    <text>{{item.title}}</text>
+    <text class="fontcolor">{{item.date}}</text>
+  </view>
+</view>

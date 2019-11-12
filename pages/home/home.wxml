@@ -1,0 +1,69 @@
+<!--pages/home/home.wxml-->
+<view class="topbg"></view>
+
+<view class='datatext'>
+  <!-- <text>数据统计</text>
+  <text class="detailtext">详情</text> -->
+</view>
+
+<view class="taskmode">
+  <view class="task-num" bindtap="datastatistics">
+    <text class="font">0</text>
+    <text>今日任务流</text>
+  </view>
+  <view class="task-num">
+    <text class="font">10</text>
+    <text>本周任务流</text>
+  </view>
+  <view class="task-num">
+    <text class="font">50</text>
+    <text>累计任务流</text>
+  </view>
+</view>
+
+<view class="tasklisttitle">
+  <view class="selectedtitle" bindtap="businessmode">
+    <text>{{businessmode[frist]}}</text>
+    <!-- <view class="line"></view> -->
+  </view>
+  <view class="sanjiao1" wx:if="{{businessmodeshow}}" bindtap="businessmode"></view>
+  <view class="sanjiao" wx:else bindtap="businessmode"></view>
+
+  <block wx:if="{{userType==1}}">
+    <view class="selectedtitle fonts" bindtap="businessmode1">
+      <text>{{businessmode1[second]}}</text>
+      <!-- <view class="line"></view> -->
+    </view>
+    <view class="sanjiao1" wx:if="{{businessmodeshow1}}" bindtap="businessmode1"></view>
+    <view class="sanjiao" wx:else bindtap="businessmode1"></view>
+  </block>
+
+
+  <image src="/images/add.png" class="add" bindtap="addcase" wx:if="{{businessname!='全部' && businessname!='疾病调查'}}"></image>
+</view>
+
+<view wx:if="{{businessmodeshow}}" class="businessmode">
+  <block wx:for="{{businessmode}}" wx:key="">
+    <view wx:if="{{index == frist}}" class="businessmode_item" style="color:#1a65ff" bindtap="selectbusiness" data-index="{{index}}">{{item}}</view>
+    <block wx:else>
+      <view class="businessmode_item" bindtap="selectbusiness" data-index="{{index}}">{{item}}</view>
+    </block>
+  </block>
+</view>
+
+<view wx:if="{{businessmodeshow1}}" class="businessmode">
+  <block wx:for="{{businessmode1}}" wx:key="">
+    <view wx:if="{{index == second}}" class="businessmode_item" style="color:#1a65ff" bindtap="selectbusiness1" data-index="{{index}}">{{item}}</view>
+    <block wx:else>
+      <view class="businessmode_item" bindtap="selectbusiness1" data-index="{{index}}">{{item}}</view>
+    </block>
+  </block>
+</view>
+
+<view wx:if="{{tasklist.length == 0}}" class="nullorder">  
+  <image src="/images/nullorder.png"></image>
+</view>
+
+<view class="tasklist">
+  <task-list tasklist="{{tasklist}}" surveymodeshow="{{surveymodeshow}}" bind:onselected="onselected" businessname="{{businessname}}" casetype="{{casetype}}"/>
+</view>

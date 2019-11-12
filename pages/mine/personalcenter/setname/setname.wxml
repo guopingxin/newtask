@@ -1,0 +1,12 @@
+<!--pages/mine/personalcenter/setname/setname.wxml-->
+<view class="container">
+
+  <form bindsubmit="setname">
+    <view class="setname">
+      <input name="name" value="{{name}}" bindinput="inputname"></input>
+      <image src="/images/del_icon.png" bindtap="deletetext"></image>
+    </view>
+    <button class="sure" form-type="submit" wx:if="{{noedit}}">确定</button>
+  </form>
+
+</view>

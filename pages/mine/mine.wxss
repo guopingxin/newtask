@@ -1,0 +1,160 @@
+/* pages/mine/mine.wxss */
+.topmode{
+  height: 360rpx;
+  width: 100%;
+  background: url(https://6661-fanqizhalianmeng-8ygjc-1300247030.tcb.qcloud.la/task/pic_beijing%402x.png?sign=3120a655d31eba383653e338e93da014&t=1570765387) left top no-repeat;
+  background-size: 100% 100%;
+}
+
+.title{
+  color: white;
+  font-size: 30rpx;
+  width: 100%;
+  height: 102rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 26rpx;
+}
+
+.usercontent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  margin: 0 5%;
+}
+
+.aperture1{
+  border: 3rpx solid #aec8ff;
+  box-shadow: 0 0 6rpx 5rpx #aec8ff;
+  border-radius: 50%;
+  width: 123rpx;
+  height: 123rpx;
+}
+
+.aperture2{
+  border: 3rpx solid #5e92ff;
+  box-shadow: 0 0 6rpx 5rpx #5e92ff;
+  border-radius: 50%;
+  width: 120rpx;
+  height: 120rpx;
+}
+
+.aperture2 image{
+  width: 117rpx;
+  height: 117rpx;
+  border-radius: 50%;
+}
+
+.bianjiimg{
+  width: 50rpx;
+  height: 50rpx;
+}
+
+.nickname{
+  display: flex;
+  flex-direction: column;
+  width: 65%;
+  color:white;
+}
+
+.arrows-right image{
+  width: 44rpx;
+  height: 34rpx;
+}
+
+.section{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 92%;
+  align-items: center;
+  margin: 0 4%;
+}
+
+.each_cell{
+  display: flex;
+  height: 120rpx;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.item-text{
+  width: 88%;
+  height: 120rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 14rpx;
+  border-bottom: 1rpx solid #e8e8e8;
+}
+
+.icon-img{
+  width: 82rpx;
+  height: 82rpx;
+}
+
+.modal {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-tip {
+  font-family: PingFangSC-Medium;
+  font-size: 36rpx;
+  line-height: 50rpx;
+  padding: 30rpx 10rpx 0;
+  text-align: center;
+}
+
+.modalContent {
+  background: #fff;
+  width: 650rpx;
+  border-radius: 10rpx;
+  color: #444;
+}
+
+.cancelTop {
+  display: flex;
+  justify-content: space-around;
+}
+
+.data {
+  padding: 16rpx 0 30rpx 0;
+  text-align: center;
+  font-size: 30rpx;
+  color: #595959;
+  width: 100%;
+}
+
+.cancel {
+  display: inline-block;
+  width: 200rpx;
+  text-align: center;
+  padding: 10rpx 0px 10rpx 0px;
+  font-size: 36rpx;
+  border-radius: 50rpx;
+  margin: 14rpx 0 50rpx 0;
+}
+
+.no{
+  background: #ecebeb;
+  color: #595959;
+}
+
+.yes {
+  color: white;
+  background: #1a65ff;
+}

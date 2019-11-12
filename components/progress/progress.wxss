@@ -1,0 +1,28 @@
+.progress{
+  display: flex;
+  align-items:flex-start;
+}
+
+.circle{
+  width: 10rpx;
+  height: 10rpx;
+  background: rgb(255, 136, 0);
+  box-shadow: 0 0 6rpx 6rpx rgba(255, 136, 0, 0.5);
+  border-radius: 50%;
+  margin: 30rpx;
+}
+
+.progress-content{
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1rpx solid #e8e8e8;
+  height: 100rpx;
+  justify-content: center;
+  width: 80%;
+}
+
+.fontcolor{
+  color: #b5b5b5;
+  font-size: 24rpx;
+}
+

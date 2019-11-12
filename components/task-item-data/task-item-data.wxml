@@ -1,0 +1,4 @@
+<view wx:for="{{taskCategory}}" wx:key="" class="taskCategory">
+  <text>{{item.text}}</text>
+  <text>{{item.num}}</text>
+</view>

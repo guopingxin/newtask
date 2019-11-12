@@ -1,0 +1,278 @@
+<!--pages/mine/mine.wxml-->
+<view class="topmode">
+  <text class="title">我的</text>
+  <view class="usercontent" bindtap="personalcenter">
+    <view class="aperture1">
+      <view class="aperture2">
+        <image src="{{hostName}}/uploads/face/{{userinfor.face}}" wx:if="{{userinfor.face}}"></image>
+        <image src="/images/head-portrait.png" wx:else></image>
+      </view>
+    </view>
+    <view class="nickname">
+      <text>{{userinfor.nickname}}</text>
+      <text>{{userinfor.mobile}}</text>
+    </view>
+    <image src='/images/icon_bianji@2x.png' class="bianjiimg"></image>
+  </view>
+</view>
+
+<!-- <view class="header">
+    <image src='../img/1.png'></image>
+    <view class='avatar_cell'>
+      <view class='avatar'>
+        <image src='../img/mineoff@2x.png' wx:if='{{!userInfor.face}}' bindtap='updateAvatar'></image>
+        <image src='{{hostName}}uploads/face/{{userInfor.face}}' wx:if='{{userInfor.face}}' bindtap='updateAvatar'></image>
+      </view>
+    </view>
+    <view class='user_name'>{{userInfor.nickname}}
+      <text wx:if='{{userInfor.job_no}}'>({{userInfor.job_no}})</text>
+    </view>
+  </view> -->
+<view class='section'>
+  <!-- 提现 -->
+  <view class='each_cell' bindtap='toCashWithdrawal'>
+
+    <image src='/images/account_icon.png' class="icon-img" />
+    <view class="item-text">
+      <view class='tab_text'>我的钱包</view>
+      <view class="arrows-right">
+        <image src="/images/icon_Arrow@2x.png"></image>
+      </view>
+    </view>
+  </view>
+  <!-- <view class='each_cell' bindtap='toQrCode' wx:if="{{userinfor.coupon == 1 || userinfor.vip == 1}}">
+      <button form-type='submit' hover-class="none" class='formIdBtn1'>
+        <view class='each_tab'>
+          <view class='icon_cell'>
+            <image src='../img/er_code.png' />
+          </view>
+          <view class='tab_text'>
+            推广码
+          </view>
+        </view>
+
+        <view class="arrows-right">
+          <image src="/images/icon_Arrow@2x.png"></image>
+        </view>
+      </button>
+    </view> -->
+
+  <!-- *************** -->
+  <!-- <view class='each_cell' bindtap='toData' wx:if='{{serviceType==1||serviceType==11||serviceType==2}}'>
+      <form bindsubmit='submitFormId' report-submit='true'>
+        <button form-type='submit' hover-class="none" class='formIdBtn1'>
+          <view class='each_tab'>
+            <view class='icon_cell'>
+              <image src='../img/data-statistics_icon.png'></image>
+            </view>
+            <view class='tab_text'>
+              数据统计
+            </view>
+          </view>
+        </button>
+      </form>
+    </view> -->
+  <!-- <view class='each_cell' bindtap='toDataOrder' wx:else>
+      <form bindsubmit='submitFormId' report-submit='true'>
+        <button form-type='submit' hover-class="none" class='formIdBtn1'>
+          <view class='each_tab'>
+            <view class='icon_cell'>
+              <image src='../img/data-statistics_icon.png'></image>
+            </view>
+            <view class='tab_text'>
+              数据统计
+            </view>
+          </view>
+
+          <view class="arrows-right">
+            <image src="/images/icon_Arrow@2x.png"></image>
+          </view>
+        </button>
+      </form>
+    </view> -->
+  <!-- <view class='each_cell' bindtap='toOrder'>
+      <view class='each_tab'>
+        <view class='icon_cell'>
+          <image src='../img/sign.png'></image>
+        </view>
+        <view class='tab_text'>
+          所有订单
+        </view>
+      </view>
+    </view> -->
+
+  <view class='each_cell' bindtap='datastatistics'>
+
+    <image src='/images/data-statistics_icon.png' class="icon-img" />
+    <view class="item-text">
+      <view class='tab_text'>数据统计</view>
+      <view class="arrows-right">
+        <image src="/images/icon_Arrow@2x.png"></image>
+      </view>
+    </view>
+  </view>
+
+  <view class='each_cell' bindtap='unbindWX' wx:if='{{userinfor.openid}}'>
+
+    <image src='/images/wxbind.png' class="icon-img" />
+    <view class="item-text">
+      <view class='tab_text'>解绑微信</view>
+      <view class="arrows-right">
+        <image src="/images/icon_Arrow@2x.png"></image>
+      </view>
+    </view>
+  </view>
+
+  <!-- <view class='each_cell' bindtap='bindWX' wx:else>
+
+    <image src='/images/wxbind.png' class="icon-img" />
+    <view class="item-text">
+      <view class='tab_text'>绑定微信</view>
+      <view class="arrows-right">
+        <image src="/images/icon_Arrow@2x.png"></image>
+      </view>
+    </view>
+  </view> -->
+
+  <view class='each_cell' bindtap='tempw'>
+
+    <image src='/images/change-pwd_icon.png' class="icon-img" />
+    <view class="item-text">
+      <view class='tab_text'>修改密码</view>
+      <view class="arrows-right">
+        <image src="/images/icon_Arrow@2x.png"></image>
+      </view>
+    </view>
+  </view>
+
+  <view class='each_cell' bindtap='logoutModal'>
+
+    <image src='/images/login-out.png' class="icon-img" />
+    <view class="item-text">
+      <view class='tab_text'>退出登录</view>
+      <view class="arrows-right">
+        <image src="/images/icon_Arrow@2x.png"></image>
+      </view>
+    </view>
+  </view>
+
+
+
+  <!-- <view class='each_cell' bindtap='unbindWX' wx:if='{{userinfor.openid}}'>
+    <form bindsubmit='submitFormId' report-submit='true'>
+      <button form-type='submit' hover-class="none" class='formIdBtn1'>
+        <view class='each_tab'>
+          <view class='icon_cell'>
+            <image src='/images/wxbind.png'></image>
+          </view>
+          <view class='tab_text'>
+            解绑微信
+          </view>
+        </view>
+
+        <view class="arrows-right">
+          <image src="/images/icon_Arrow@2x.png"></image>
+        </view>
+      </button>
+    </form>
+  </view>
+
+  <view class='each_cell' bindtap='bindWX' wx:else>
+    <form bindsubmit='submitFormId' report-submit='true'>
+      <button form-type='submit' hover-class="none" class='formIdBtn1'>
+        <view class='each_tab'>
+          <view class='icon_cell'>
+            <image src='/images/wxbind.png'></image>
+          </view>
+          <view class='tab_text'>
+            绑定微信
+          </view>
+        </view>
+
+        <view class="arrows-right">
+          <image src="/images/icon_Arrow@2x.png"></image>
+        </view>
+      </button>
+    </form>
+  </view>
+
+  <view class='each_cell' bindtap='tempw'>
+    <form bindsubmit='submitFormId' report-submit='true'>
+      <button form-type='submit' hover-class="none" class='formIdBtn1'>
+        <view class='each_tab'>
+          <view class='icon_cell'>
+            <image src='/images/change-pwd_icon.png'></image>
+          </view>
+          <view class='tab_text'>
+            修改密码
+          </view>
+        </view>
+
+        <view class="arrows-right">
+          <image src="/images/icon_Arrow@2x.png"></image>
+        </view>
+      </button>
+    </form>
+  </view> -->
+  <!-- <view class='each_cell' bindtap='toSign'>
+      <form bindsubmit='submitFormId' report-submit='true'>
+        <button form-type='submit' hover-class="none" class='formIdBtn1'>
+          <view class='each_tab'>
+            <view class='icon_cell'>
+              <image src='../img/punch_icon.png'></image>
+            </view>
+            <view class='tab_text'>
+              打卡签到
+            </view>
+          </view>
+
+          <view class="arrows-right">
+          <image src="/images/icon_Arrow@2x.png"></image>
+        </view>
+        </button>
+      </form>
+    </view> -->
+  <!-- <view class='each_cell'>
+      <form>
+        <button type="primary" bindtap="scanCode" class='formIdBtn1'>
+          <view class='each_tab'>
+            <view class='icon_cell'>
+              <image src='../img/punch_icon.png'></image>
+            </view>
+            <view class='tab_text'>
+              打
+            </view>
+          </view>
+        </button>
+      </form>
+    </view> -->
+  <!-- <view class='each_cell' bindtap='logoutModal'>
+    <form bindsubmit='submitFormId' report-submit='true'>
+      <button form-type='submit' hover-class="none" class='formIdBtn1'>
+        <view class='each_tab'>
+          <view class='icon_cell'>
+            <image src='/images/login-out.png'></image>
+          </view>
+          <view class='tab_text'>
+            退出登录
+          </view>
+        </view>
+
+        <view class="arrows-right">
+          <image src="/images/icon_Arrow@2x.png"></image>
+        </view>
+      </button>
+    </form>
+  </view>-->
+</view>
+
+<view class='modal' wx:if='{{logOut}}'>
+  <view class='modalContent'>
+    <view class="modal-tip">退出登录</view>
+    <view class='data'>是否确定退出？</view>
+    <view class='cancelTop'>
+      <view class='cancel no' bindtap='cancelModal'>取消</view>
+      <view class='cancel yes' bindtap='logOutL'>确定</view>
+    </view>
+  </view>
+</view>

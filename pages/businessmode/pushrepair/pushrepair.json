@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "progress-item":"/components/progress/progress"
+  },
+  "navigationBarTitleText": "推修详情"
+}

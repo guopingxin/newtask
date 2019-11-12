@@ -1,0 +1,49 @@
+/* pages/mine/personalcenter/setname/setname.wxss */
+page{
+  width: 100%;
+  height: 100%;
+}
+
+.container{
+  width: 100%;
+  height: 100%;
+  background: #e8e9e9;
+}
+
+form{
+  width: 100%;
+}
+
+.setname{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 80rpx;
+  align-items: center;
+  color: #88898b;
+  font-size: 32rpx;
+  padding: 0 3%;
+  background: white;
+}
+
+.setname input{
+  width: 90%;
+}
+
+.setname image{
+  width: 36rpx;
+  height: 36rpx;
+}
+
+.sure{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100rpx;
+  background: #366ff3;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+}

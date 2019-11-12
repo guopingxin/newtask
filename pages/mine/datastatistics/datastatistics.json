@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "数据统计",
+  "navigationBarBackgroundColor": "#1a65ff",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "ec-canvas": "/components/ec-canvas/ec-canvas",
+    "task-item": "/components/task-item-data/task-item-data"
+  }
+}

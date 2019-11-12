@@ -1,0 +1,20 @@
+<!--pages/mine/datastatistics/datastatistics.wxml-->
+<view class="defalut"></view>
+<view class="container1">
+  <cover-view class="chart_date">
+    <block wx:for="{{chart_date}}" wx:key="">
+      <cover-view style="color:#fff;background:#1a65ff" wx:if="{{index == dataIndex}}" bindtap="selecteddate" data-index="{{index}}">{{item}}</cover-view>
+      <cover-view wx:else data-index="{{index}}" bindtap="selecteddate">{{item}}</cover-view>
+    </block>
+  </cover-view>
+  <ec-canvas id="mychart-dom-line" canvas-id="mychart-line" ec="{{ ec }}"></ec-canvas>
+</view>
+
+<view class="tasktotal">
+  <text>累计任务流</text>
+  <text>总数量50</text>
+</view>
+
+<view class="taskwholemode">
+  <task-item taskCategory="{{taskCategory}}" />
+</view>
