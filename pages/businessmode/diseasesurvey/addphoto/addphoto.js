@@ -71,7 +71,7 @@ Page({
 
     const sys = wx.getSystemInfoSync();
     that.setData({
-      cameral: 'width:' + sys.screenWidth + 'px; height:' + (sys.screenHeight-140) + 'px'
+      cameral: 'width:' + sys.screenWidth + 'px; height:' + (sys.screenHeight-140) + 'px;'
     })
 
     console.log("dddd", sys.screenWidth, sys.screenHeight);

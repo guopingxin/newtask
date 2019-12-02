@@ -24,7 +24,7 @@
   </view>
   <view class="diseaseitem">
     <text>联系电话</text>
-    <text bindtap="callphone"  data-phone="{{diseaselist.docking_mobile}}">{{diseaselist.docking_mobile}}</text>
+    <text bindtap="callphone" data-phone="{{diseaselist.docking_mobile}}">{{diseaselist.docking_mobile}}</text>
   </view>
   <view class="diseaseitem">
     <text>调查员</text>
@@ -228,7 +228,7 @@
 
   <view class="pic-mode">
 
-    <view class="datalist" wx:for="{{imgdatalist}}" wx:key="" >
+    <view class="datalist" wx:for="{{imgdatalist}}" wx:key="">
       <text>{{item.title}}</text>
       <view class="imglist">
         <view wx:for="{{item.imagecell}}" wx:key="" wx:for-index="imgindex" wx:for-item="imgitem" class="imgmode" catchtap="previewImage" data-index="{{index}}">
@@ -332,14 +332,14 @@
   </view> -->
 </view>
 
-<view class="wholetask" wx:if='{{first == 3}}'>
+<!-- <view class="wholetask" wx:if='{{first == 3}}'>
   <view class="wholetasktip">机构回复</view>
   <view class="line"></view>
 
   <view class="baseinfor">
     <view class="tasklist baseitem" wx:if="{{diseaselist.status >3}}">
       <text>阳性疑点:</text>
-      <input  value="{{doubttext}}" disabled="false"></input>
+      <input value="{{doubttext}}" disabled="false"></input>
     </view>
 
     <view class="tasklist baseitem" wx:else bindtap="positivedoubt">
@@ -385,10 +385,11 @@
       <textarea type="text" placeholder="选填" bindinput="inputproblem" wx:else></textarea>
     </view>
   </view>
-</view>
+</view> -->
 
 <frame-mode giveup="{{giveup}}" bind:onselected="onselectedgiveup" animationData="{{animationData}}" />
-<view class="nextstep" bindtap="nextstep" wx:if="{{first == 0}}">下一步</view>
+<view class="nextstep" bindtap="nextstep" wx:if="{{first == 0 && diseaselist.status< 4}}">下一步</view>
+<view class="nextstep background" wx:if="{{first == 0 && diseaselist.status >= 4}}">已提交</view>
 
 <!-- 相关资料按钮 -->
 <view bindtap="uploadimage" class="imagesure" wx:if="{{imagecell.length>0}}">确定</view>

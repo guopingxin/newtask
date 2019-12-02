@@ -65,6 +65,20 @@ class Diseasesurvey extends Base {
     this.request(params)
   }
 
+  //案件提交
+  audit(that,callback){
+    var params = {
+      url:'/api/sick/5/audit',
+      type:"GET",
+      data:{
+        id: that.data.listid
+      },
+      auth: true,
+      sCallback: callback
+    }
+    this.request(params)
+  }
+
   //疾病调查资料上传
   finish(that, callback) {
     var params = {

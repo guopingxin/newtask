@@ -37,7 +37,8 @@ Page({
    */
   data: {
     first: 0,
-    diseasestep: ['全部任务', '基本信息', '相关资料', '机构回复'],
+    // diseasestep: ['全部任务', '基本信息', '相关资料', '机构回复'],
+    diseasestep: ['全部任务', '基本信息', '相关资料'],
     diseaselist: [],
     tasklist: [],
     basetitle: ['患者成员信息', '申请人信息'],
@@ -784,8 +785,6 @@ Page({
 
     var that = this;
 
-    console.log("hhh")
-
     for (var item in that.data.tasklist) {
 
       if (that.data.tasklist[item].status == 0) {
@@ -801,8 +800,21 @@ Page({
     }
 
     if (!that.data.taskfalse) {
-      that.setData({
-        first: 3
+      console.log("AA");
+      diseasesurvey.audit(that,res=>{
+        if(res.status == 1){
+          wx.showToast({
+            title: '案件已提交审核!',
+            icon:"none",
+            duration:1500
+          })
+          
+          that.data.diseaselist.status = 4;
+
+          that.setData({
+            diseaselist: that.data.diseaselist
+          })
+        }
       })
     }
   },

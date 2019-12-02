@@ -5,7 +5,8 @@
 }
 
 camera{
-  position: relative
+  position: relative;
+  z-index: -10;
 }
 
 .left_arrows{
@@ -177,4 +178,5 @@ camera{
   display: flex;
   justify-content: space-around;
   align-items: center;
+  z-index: 100;
 }
