@@ -37,7 +37,12 @@
 .progress {
   width: 100%;
   padding: 0 24rpx;
-  padding-bottom: 104rpx;
+  /* padding-bottom: 104rpx; */
+}
+
+.detailed {
+  width: 100%;
+  padding: 0 24rpx 114rpx;
 }
 
 .progress-title {
@@ -51,6 +56,7 @@
   border-radius: 20rpx;
   display: flex;
   flex-direction: column-reverse;
+
 }
 
 .progress-item {

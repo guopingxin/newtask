@@ -43,7 +43,7 @@ Page({
     basetitle: ['患者成员信息', '申请人信息'],
     currentTab: 0,
     baselist: ['', '', '', '', '', '', '', '', '', ''],
-    imgdatalist: [],
+    imgdatalist: ['', '', ''],
     voicedatalist: ['', ''],
     region: ['陕西省', '西安', '雁塔区'],
     regionvalue: ["", "", ""],
@@ -55,9 +55,71 @@ Page({
     fileNameTemp: '',
     isreplyshow: true,
     address: '',
-    hostName: Config.restUrl,
-    showcanvas: false
+    hostName: Config.imageUrl,
+    showcanvas: false,
+
+    //阳性疑点类型
+    positivedoubttype: [{
+        name: '1',
+        value: '患者不是成员本人'
+      },
+      {
+        name: '2',
+        value: '不在互助计划期间',
+      },
+      {
+        name: '3',
+        value: '等待期'
+      },
+      {
+        name: '4',
+        value: '申领人故意编造未曾发生的事故'
+      },
+      {
+        name: '5',
+        value: '申领人编造虚假的事故原因'
+      },
+      {
+        name: '6',
+        value: '申领人故意制造互助事件',
+      },
+      {
+        name: '7',
+        value: '材料虚假'
+      },
+      {
+        name: '8',
+        value: '虚报年龄'
+      },
+      {
+        name: '9',
+        value: '未如实告知'
+      },
+      {
+        name: '10',
+        value: '责任免除'
+      },
+      {
+        name: '11',
+        value: '其他阳性信息'
+      },
+      {
+        name: '12',
+        value: '无'
+      }
+    ],
+
+    isshowcheckbox: true, //是否显示复选框
+    //问题反馈
+    problem: ["正常案件", "健告条款存在漏洞", "不属于互助责任核", "暴力排查,实务不可操作", "不合理追溯", "无限排查", "职责不明", "未收到委托"],
+
+    problemFirst: false,
+    spinShow: true,
+    doubttext: '',
+    imagecell: []
+
   },
+
 
   /**
    * 生命周期函数--监听页面加载
@@ -66,9 +128,21 @@ Page({
 
     var that = this
     that.data.listid = options.listId
+    that.data.type = options.businessId
 
+    if (options.city != 'undefined') {
+      that.setData({
+        address: options.province + "-" + options.city,
+      })
+    } else {
+      that.setData({
+        address: options.province,
+      })
+    }
     that.setData({
-      address: options.province + "-" + options.city
+      // diseaselist: JSON.parse(options.item),
+      taskname: app.globalData.userinfor.nickname,
+      taskmobile: app.globalData.userinfor.mobile
     })
 
     wx.getLocation({
@@ -78,6 +152,37 @@ Page({
           that.data.picaddress = res.address;
         })
       },
+    })
+
+    diseasesurvey.sicktask(res => {
+      console.log("res", res);
+      if (res.status == 1) {
+        that.data.diseaselistmode = res.data
+      }
+
+    })
+
+    diseasesurvey.relatedInformation(that.data.listid, res => {
+      console.log(res);
+      if (res.status == 1) {
+
+        res.data.forEach((item, index) => {
+
+          if (item.picture) {
+            if (item.picture.split(",")) {
+              that.data.imagecell = item.picture.split(",")
+            } else {
+              that.data.imagecell.push(item)
+            }
+
+            item.imagecell = that.data.imagecell
+          }
+        })
+
+        that.setData({
+          imgdatalist: res.data
+        })
+      }
     })
 
   },
@@ -90,15 +195,50 @@ Page({
   onShow: function() {
     var that = this
 
-    diseasesurvey.sicknessinfo(that.data.listid, res => {
+    that.data.key = "sickness";
+    that.data.doubttext = '';
+
+    diseasesurvey.sicknessinfo(that.data.listid, that, res => {
       that.setData({
         diseaselist: res.data,
-        tasklist: res.step
+        tasklist: res.sickTask,
+        spinShow: false
       })
 
-      that.setData({
-        imgdatalist: res.data.data.split(",")
-      })
+      if (res.data.suspects) {
+        var doubt = JSON.parse(res.data.suspects);
+        doubt.forEach((item, index) => {
+          that.data.doubttext += (',' + item)
+        })
+
+        that.setData({
+          doubttext: that.data.doubttext.substring(1)
+        })
+      }
+
+
+
+      // that.data.tasklist.forEach((item,index)=>{
+
+      //   that.data.diseaselistmode.forEach((item1,index1)=>{
+
+      //     var diseaselistdata = JSON.parse(item1.data);
+
+      //     if (item.sickness_task_id == item1.id){
+
+      //       diseaselistdata.forEach((item2,index2)=>{
+
+      //       })
+      //     }
+
+
+      //   })
+      // })
+
+
+      // that.setData({
+      //   imgdatalist: res.data.data.split(",")  
+      // })
 
       // for (let i in that.data.imgdatalist) {
       //     that.data.imagecell.push({
@@ -107,7 +247,7 @@ Page({
       //     })
 
       //   console.log("ff", that.data.imgdatalist[i].substring(0, 4));
-        
+
       //   }
 
       // that.setData({
@@ -116,12 +256,14 @@ Page({
 
     })
 
-    that.data.taskid = app.globalData.userinfor.id
-    pushrepair.taskinfo(that.data.taskid, res => {
-      that.setData({
-        taskinfo: res.data
-      })
-    })
+    // that.data.taskid = app.globalData.userinfor.id
+
+
+    // pushrepair.taskinfo(that.data.taskid, res => {
+    //   that.setData({
+    //     taskinfo: res.data
+    //   })
+    // })
 
 
   },
@@ -138,42 +280,30 @@ Page({
   //进入任务
   todetail: function(e) {
     console.log(e);
-    var index = e.currentTarget.id;
-    var item = e.currentTarget.dataset.item;
 
-    if (index == "0") {
-      wx.navigateTo({
-        url: './diseaseupload/diseaseupload?type=' + index + '&item=' + JSON.stringify(item),
-      })
-    } else if (index == "1") {
-      wx.navigateTo({
-        url: './diseaseupload/diseaseupload?type=' + index + '&item=' + JSON.stringify(item),
-      })
-    } else if (index == "2") {
-      wx.navigateTo({
-        url: './diseaseupload/diseaseupload?type=' + index + '&item=' + JSON.stringify(item),
-      })
-    } else if (index == "3") {
-      wx.navigateTo({
-        url: './diseaseupload/diseaseupload?type=' + index + '&item=' + JSON.stringify(item),
-      })
-    } else if (index == "4") {
-      wx.navigateTo({
-        url: './diseaseupload/diseaseupload?type=' + index + '&item=' + JSON.stringify(item),
-      })
-    } else if (index == "5") {
-      wx.navigateTo({
-        url: './diseaseupload/diseaseupload?type=' + index + '&item=' + JSON.stringify(item),
-      })
-    } else if (index == "6") {
-      wx.navigateTo({
-        url: './diseaseupload/diseaseupload?type=' + index + '&item=' + JSON.stringify(item),
-      })
-    } else if (index == "7") {
-      wx.navigateTo({
-        url: './diseaseupload/diseaseupload?type=' + index + '&item=' + JSON.stringify(item),
-      })
-    }
+    var that = this
+    var recordid = e.currentTarget.dataset.recordid;
+    var name = e.currentTarget.dataset.name;
+    var sickness_task_id = e.currentTarget.dataset.sickness_task_id;
+    var reject = e.currentTarget.dataset.reject //任务意见驳回
+
+    diseasesurvey.recordlist(recordid, res => {
+      if (res.status == 1) {
+        if (res.data.length > 0) {
+
+          wx.navigateTo({
+            url: './diseasetask/diseasetask?recordid=' + recordid + '&name=' + name + '&sickness_task_id=' + sickness_task_id + '&reject=' + reject,
+          })
+
+        } else {
+
+          wx.navigateTo({
+            url: './adddiseasetask/adddiseasetask?title=' + name + '&taskId=' + sickness_task_id + "&id=" + recordid,
+          })
+
+        }
+      }
+    })
 
   },
 
@@ -323,7 +453,7 @@ Page({
             canvasId: 'firstCanvas',
             success: (ress) => {
 
-              console.log("hh",ress);
+              console.log("hh", ress);
 
               that.data.imagecell.push({
                 id: imgId++,
@@ -350,9 +480,9 @@ Page({
     var index = e.currentTarget.dataset.index;
     // var imgindex = e.currentTarget.dataset.imgindex
 
-    for (let c of this.data.imgdatalist) {
+    for (let c of this.data.imgdatalist[index].imagecell) {
 
-      imgArr.push(this.data.hostName+"/uploads/"+c)
+      imgArr.push(this.data.hostName + "/uploads/" + c)
 
     }
 
@@ -363,7 +493,7 @@ Page({
   },
 
   //预览图片(正上传)
-  previewImage1: function (e) {
+  previewImage1: function(e) {
 
     var imgArr = [];
     var index = e.currentTarget.dataset.index;
@@ -542,41 +672,27 @@ Page({
   reply: function() {
 
     var that = this
-    if (!that.data.suspects) {
+
+    if (that.data.positivedoubttypeselected.length == 0) {
       wx.showToast({
-        title: '请输入阳性疑点!',
+        title: '请选择阳性疑点!',
         icon: 'none'
       })
       return
     }
 
-    if (!that.data.regionvalue[0]) {
+    if (!that.data.probleminddex) {
       wx.showToast({
-        title: '请选择省份!',
+        title: '请选择调查问题反馈!',
         icon: 'none'
       })
       return
     }
 
-    if (!that.data.money) {
-      wx.showToast({
-        title: '请输入调查金额!',
-        icon: 'none'
-      })
-      return
-    }
 
     if (!that.data.giveupresult) {
       wx.showToast({
         title: '请选择是否放弃!',
-        icon: 'none'
-      })
-      return
-    }
-
-    if (!that.data.feedback) {
-      wx.showToast({
-        title: '请输入问题反馈!',
         icon: 'none'
       })
       return
@@ -600,66 +716,56 @@ Page({
       })
     } else {
 
-
       that.data.tasklist.forEach((item, index) => {
 
-        if (item.status == 1) {
-          diseasesurvey.reply(that, res => {
-            console.log(res)
-            if (res.status == 1) {
+        if (that.data.tasklist[index].status == 0) {
 
-              wx.showToast({
-                title: '机构回复成功!',
-                icon: 'none'
-              })
-            } else {
-              wx.showToast({
-                title: res.msg,
-                icon: 'none'
-              })
-            }
-          })
+          that.data.taskfalse = true
+          return;
+        }
 
-        } else {
+      })
 
-          if (index == 7) {
+      if (!that.data.taskfalse) {
+        diseasesurvey.reply(that, res => {
+          console.log(res)
+          if (res.status == 1) {
 
-            diseasesurvey.reply(that, res => {
-              console.log(res)
-              if (res.status == 1) {
-
-                wx.showToast({
-                  title: '机构回复成功!',
-                  icon: 'none'
-                })
-              } else {
-                wx.showToast({
-                  title: res.msg,
-                  icon: 'none'
-                })
-              }
+            wx.showToast({
+              title: '机构回复成功!',
+              icon: 'none'
             })
           } else {
             wx.showToast({
-              title: '请完成全部任务再结案!',
-              icon: "none",
-              duration: 1500
+              title: res.msg,
+              icon: 'none'
             })
-            return
           }
-        }
-      })
+        })
+      } else {
+        wx.showToast({
+          title: '请完成全部任务再结案!',
+          icon: "none",
+          duration: 1500
+        })
+      }
     }
-
-
-
-
 
   },
 
   //输入阳性疑点信息
   positivedoubt: function(e) {
-    this.data.suspects = e.detail.value;
+
+    if (this.data.isshowcheckbox) {
+      this.setData({
+        isshowcheckbox: false
+      })
+    } else {
+      this.setData({
+        isshowcheckbox: true
+      })
+    }
+    // this.data.suspects = e.detail.value;
   },
 
   //输入调查金额
@@ -667,9 +773,9 @@ Page({
     this.data.money = e.detail.value;
   },
 
-  //输入问题反馈
+  //输入调查整体说明
   inputproblem: function(e) {
-    this.data.feedback = e.detail.value;
+    this.data.all_remark = e.detail.value;
   },
 
 
@@ -678,24 +784,62 @@ Page({
 
     var that = this;
 
+    console.log("hhh")
+
     for (var item in that.data.tasklist) {
 
-      if (that.data.tasklist[item].step == 8) {
+      if (that.data.tasklist[item].status == 0) {
 
-        that.setData({
-          first: 3
+        that.data.taskfalse = true
+        wx.showToast({
+          title: '请完成全部任务再结案!',
+          icon: "none",
+          duration: 1500
         })
+        return;
+      }
+    }
 
-      } else {
-        if (that.data.tasklist[item].status == 0) {
-          wx.showToast({
-            title: '请完成全部任务再结案!',
-            icon: "none",
-            duration: 1500
-          })
-          return;
+    if (!that.data.taskfalse) {
+      that.setData({
+        first: 3
+      })
+    }
+  },
+
+  //阳性疑点复选框
+  checkboxChange(e) {
+
+    var that = this
+
+    that.data.positivedoubttypeselected = [];
+
+    that.data.checkbox = e.detail.value;
+    for (var item of that.data.checkbox) {
+
+      for (var i of that.data.positivedoubttype) {
+
+        if (i.name == item) {
+          that.data.positivedoubttypeselected.push(i.value);
         }
       }
     }
+
+    console.log(that.data.positivedoubttypeselected);
+  },
+
+  //普通选择器(问题反馈))
+  bindOrdinaryChange(e) {
+    this.setData({
+      problemFirst: true,
+      probleminddex: e.detail.value
+    })
+  },
+
+  //打电话
+  callphone(e){
+    wx.makePhoneCall({
+      phoneNumber: e.currentTarget.dataset.phone
+    })
   }
 })

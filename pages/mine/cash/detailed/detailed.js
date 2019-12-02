@@ -4,8 +4,7 @@ var cash = new Cash();
 
 Page({
   data: {
-    showRecord: true,
-    page:1
+    showRecord: true
   },
   onLoad: function (options) {
     

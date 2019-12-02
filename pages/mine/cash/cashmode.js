@@ -9,8 +9,9 @@ class Cash extends Base{
   //获取金豆数量
   gold(callback){
     var params = {
-      url: '/task/index/gold',
-      type: 'POST',
+      url: '/api/index/bean',
+      type: 'GET',
+      auth:true,
       sCallback: callback
     }
     this.request(params);
@@ -19,13 +20,14 @@ class Cash extends Base{
   //提现
   withdrawal(that, callback){
     var params = {
-      url: '/task/index/withdrawal',
+      url: '/api/index/withdrawal',
       type: 'POST',
       data:{
         bean: that.data.cashNum,
         openid: that.data.openid,
         true_name: that.data.name
       },
+      auth:true,
       sCallback: callback
     }
     this.request(params);
@@ -34,11 +36,9 @@ class Cash extends Base{
   //提现明细
   detail(that,callback){
     var params = {
-      url: '/task/index/detail',
+      url: '/api/index/detail',
       type: 'GET',
-      data: {
-        page:that.data.page
-      },
+      auth:true,
       sCallback: callback
     }
     this.request(params);

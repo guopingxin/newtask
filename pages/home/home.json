@@ -1,6 +1,10 @@
 {
   "navigationBarTitleText": "作业端",
   "usingComponents": {
-    "task-list": "/components/tasklist/tasklist"
+    "task-list": "/components/tasklist/tasklist",
+    "i-spin": "../../dist/spin/index",
+    "i-load-more": "../../dist/load-more/index",
+    "i-steps": "../../dist/steps/index",
+    "i-step": "../../dist/step/index"
   }
 }

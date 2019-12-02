@@ -65,10 +65,20 @@ class HomeMode extends Base {
   }
 
   //所有案件列表
-  lists(callback) {
+  lists(that,callback) {
+
     var params = {
-      url: '/task/index/lists',
+      // url: '/task/index/lists',
+      url:'/api/opt/work/lists',
       type: 'GET',
+      auth:true,
+      data:{
+        key:that.data.key,
+        type:that.data.type,
+        page:that.data.page,
+        limit:that.data.limit,
+        group_id: that.data.type =='survey'?that.data.group_id:''  
+      },
       sCallback: callback
     }
     this.request(params);
@@ -77,7 +87,18 @@ class HomeMode extends Base {
   // 订单分类列表
   orderClassify(callback) { 
     var params = {
-      url: '/api/index/classify',
+      url: '/api/auth/classify',
+      type: 'GET',
+      auth: true,
+      sCallback: callback
+    }
+    this.request(params)
+  }
+
+  // 获取用户模块
+  getUserModule(callback){
+    var params = {
+      url: '/api/auth/modules',
       type: 'GET',
       auth: true,
       sCallback: callback

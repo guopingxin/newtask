@@ -13,24 +13,32 @@ Component({
 
     todetail: function(e) {
 
+      console.log("rrr",e)
       var that = this
       var listId = e.currentTarget.id;
       var type = e.currentTarget.dataset.type;
       var city = e.currentTarget.dataset.city;
       var province = e.currentTarget.dataset.sick_address
       var datatype = e.currentTarget.dataset.datatype
+      var businessId = e.currentTarget.dataset.businessid
 
       if (datatype == 'survey'){
 
         wx.navigateTo({
-          url: '../businessmode/checkloss/checkloss?listId=' + listId + "&type=" + type,
+          url: '../businessmode/checkloss/checkloss?listId=' + listId + "&type=" + type + "&businessId=" + businessId,
         })
 
-      } else if (datatype == 'rescue'){
+      } else if (datatype == 'sickness'){
+
+        // var item = e.currentTarget.dataset.item
 
         wx.navigateTo({
-          url: '../businessmode/diseasesurvey/diseasesurvey?listId=' + listId + '&city=' + city + '&province=' + province,
+          url: '../businessmode/diseasesurvey/diseasesurvey?listId=' + listId + '&city=' + city + '&province=' + province  + "&businessId=" + businessId,
         })
+
+        // wx.navigateTo({
+        //   url: '../businessmode/diseasesurvey/diseasetask/diseasetask?listId=' + listId + '&city=' + city + '&province=' + province + '&item=' + JSON.stringify(item) + "&businessId=" + businessId,
+        // })
 
       } 
 

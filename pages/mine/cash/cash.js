@@ -18,12 +18,12 @@ Page({
   onLoad: function(options) {
     
     var that = this;
-    that.data.openid = app.globalData.openid;
+    that.data.openid = app.globalData.userinfor.openid
 
     cash.gold(res=>{
       that.setData({
         // 我的余额
-        cashData: res.data
+        cashData: res.data.gold
       })
     })
   },

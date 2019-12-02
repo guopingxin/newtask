@@ -1,0 +1,663 @@
+<view class="container">
+  <view class="title">{{title}}</view>
+
+  <!-- 第一个样式 (面访病患) -->
+  <view wx:if="{{taskId<3}}">
+    <view class="recordwhole">
+      <!-- <view class="record" bindtap="toEdit">
+        <i-icon type="enter" size="24" wx:if="{{leftarrow}}" />
+        <i-icon type="unfold" size="24" wx:else/>
+        <text>记录1</text>
+        <view class="delete">删除</view>
+      </view> -->
+
+      <view>
+        <view class="interviewtime">
+          <label>面访时间:</label>
+          <picker mode="multiSelector" value="{{dateTime}}" bindcolumnchange="changeDateTimeColumn" range="{{dateTimeArray}}" bindchange="changedateTime">
+            <view wx:if="{{!sendTimeFirst && !sendTimeName}}" class="colorgray">请选择面访时间</view>
+            <view wx:if="{{!sendTimeFirst && sendTimeName}}"></view>
+            <view wx:if="{{sendTimeFirst}}">
+              {{dateTimeArray[0][dateTime[0]]}}-{{dateTimeArray[1][dateTime[1]]}}-{{dateTimeArray[2][dateTime[2]]}} {{dateTimeArray[3][dateTime[3]]}}:{{dateTimeArray[4][dateTime[4]]}}
+            </view>
+          </picker>
+        </view>
+
+        <view class="interviewtime">
+          <label>面访地址:</label>
+          <picker mode="region" value="{{region}}" bindchange="bindRegionChange">
+            <view class="{{interviewaddress?'colorlight':(region[0]?'colorlight':'colorgray')}}">{{interviewaddress?interviewaddress:(region[0]?(region[0]+'-'+region[1]+'-'+region[2]):'请选择面访地址(省/市/区)')}}</view>
+          </picker>
+        </view>
+
+        <view class="interviewtime">
+          <label>公估人姓名:</label>
+          <input type="text" placeholder="请输入公估人姓名" placeholder-class="assessor" bindinput="bindinput" data-type="task_name"></input>
+        </view>
+
+        <view class="interviewtime">
+          <label>面访对象与患病成员关系:</label>
+          <picker mode="selector" range='{{relation}}' bindchange="bindOrdinaryChange" data-item='relation'>
+
+            <view wx:if="{{!relationFirst && !relationName}}" class="colorgray">请选择</view>
+            <view wx:if="{{!relationFirst && relationName}}"></view>
+            <view wx:if="{{relationFirst}}">
+              {{relation[relationinddex]}}</view>
+          </picker>
+        </view>
+
+        <view class="interviewtime">
+          <label>面访对象姓名:</label>
+          <input type="text" placeholder="请输入面访对象姓名" placeholder-class="assessor" bindinput="bindinput" data-type="face_name"></input>
+        </view>
+
+        <view class="interviewtime">
+          <label>是否阳性:</label>
+          <picker mode="selector" range='{{positive}}' bindchange="bindOrdinaryChange" data-item="positive">
+
+            <view wx:if="{{!positiveFirst && !positiveName}}" class="colorgray">请选择</view>
+            <view wx:if="{{!positiveFirst && positiveName}}"></view>
+            <view wx:if="{{positiveFirst}}">
+              {{positive[positiveinddex]}}</view>
+          </picker>
+        </view>
+
+        <view class="interviewtime modestyle">
+          <label>阳性说明:</label>
+          <textarea type="text" placeholder="请输入阳性说明" placeholder-class="assessor1" data-type="positive_state" bindinput="bindinput"></textarea>
+        </view>
+
+        <view class="interviewtime modestyle">
+          <label>面访经过说明:</label>
+          <textarea type="text" placeholder="请输入面访经过说明" placeholder-class="assessor1" data-type="face_state" bindinput="bindinput"></textarea>
+        </view>
+
+        <view class="investigation">
+          <label>调查材料:</label>
+          <view class="datalist">
+            <view wx:for="{{paizhaoimagecell}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+              <image src="{{hosturl}}/uploads/{{item.path}}" class="pic"></image>
+              <image src="/images/del_icon1.png" class="del" catchtap="deleteimg" id="{{item.id}}" data-type="paizhaoimagecell"></image>
+            </view>
+            <view wx:for="{{imagecell}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+              <image src="{{item.path}}" class="pic"></image>
+              <image src="/images/del_icon1.png" class="del" catchtap="deleteimg" id="{{item.id}}" data-type="imagecell"></image>
+            </view>
+            <view class="camera" catchtap="chooseimg" wx:if="{{imagecell.length<9}}">
+              <image src="/images/icon-camera@2x.png"></image>
+            </view>
+
+            <view class="voice" bindtap="openvoice">
+              <image src="/images/icon_yuyin@2x.png"></image>
+            </view>
+          </view>
+
+          <view class="recording-whole" wx:if="{{voiceIsshow}}">
+            <view class="recording" catchtouchstart="startvoice" catchtouchend='endvoice' style="background:{{bg}}">
+              <image src="/images/icon_yuyin@2x.png"></image>
+              <view>{{voicetext}}</view>
+            </view>
+            <image src="/images/cloud.png" class="shangchuan" bindtap="uploadvoice"></image>
+          </view>
+        </view>
+
+      </view>
+    </view>
+  </view>
+
+
+  <!-- 第二个样式(排查) -->
+  <view wx:elif="{{taskId<9}}">
+    <view class="recordwhole">
+      <!-- <view class="record">
+        <i-icon type="enter" size="24" wx:if="{{leftarrow}}" />
+        <i-icon type="unfold" size="24" wx:else/>
+        <text>记录1</text>
+        <view class="delete">删除</view>
+      </view> -->
+
+      <view>
+        <view class="interviewtime">
+          <label>医院名称:</label>
+          <input type="text" placeholder="请输入医院名称" placeholder-class="assessor" data-type="hospital" bindinput="bindinput"></input>
+        </view>
+
+        <view class="interviewtime">
+          <label>排查时间:</label>
+          <picker mode="multiSelector" value="{{dateTime}}" bindcolumnchange="changeDateTimeColumn" range="{{dateTimeArray}}" bindchange="changedateTime">
+            <view wx:if="{{!sendTimeFirst && !sendTimeName}}" class="colorgray">请选择排查时间</view>
+            <view wx:if="{{!sendTimeFirst && sendTimeName}}"></view>
+            <view wx:if="{{sendTimeFirst}}">
+              {{dateTimeArray[0][dateTime[0]]}}-{{dateTimeArray[1][dateTime[1]]}}-{{dateTimeArray[2][dateTime[2]]}} {{dateTimeArray[3][dateTime[3]]}}:{{dateTimeArray[4][dateTime[4]]}}
+            </view>
+          </picker>
+        </view>
+
+        <view class="interviewtime">
+          <label>排查类型:</label>
+          <picker mode="selector" range='{{investigationtype}}' bindchange="bindOrdinaryChange" data-item="investigationtype">
+
+            <view wx:if="{{!investigationtypeFirst && !investigationtypeName}}" class="colorgray">请选择</view>
+            <view wx:if="{{!investigationtypeFirst && investigationtypeName}}"></view>
+            <view wx:if="{{investigationtypeFirst}}">
+              {{investigationtype[investigationtypeinddex]}}</view>
+          </picker>
+        </view>
+
+        <view class="interviewtime">
+          <label>排查科室:</label>
+          <input type="text" placeholder="请输入排查科室" placeholder-class="assessor" data-type="screen_department" bindinput="bindinput"></input>
+        </view>
+
+        <view class="interviewtime">
+          <label>是否阳性:</label>
+          <picker mode="selector" range='{{positive}}' bindchange="bindOrdinaryChange" data-item="positive">
+
+            <view wx:if="{{!positiveFirst && !positiveName}}" class="colorgray">请选择</view>
+            <view wx:if="{{!positiveFirst && positiveName}}"></view>
+            <view wx:if="{{positiveFirst}}">
+              {{positive[positiveinddex]}}</view>
+          </picker>
+        </view>
+
+        <view class="interviewtime modestyle">
+          <label>阳性说明:</label>
+          <textarea type="text" placeholder="请输入阳性说明" placeholder-class="assessor1" data-type="positive_state" bindinput="bindinput"></textarea>
+        </view>
+
+        <view class="interviewtime modestyle">
+          <label>医院排查结论:</label>
+          <textarea type="text" placeholder="请输入医院排查结论" placeholder-class="assessor1" data-type="screen_conclusion" bindinput="bindinput"></textarea>
+        </view>
+
+        <view class="investigation">
+          <label>调查材料:</label>
+          <view class="datalist">
+            <view wx:for="{{paizhaoimagecell}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+              <image src="{{hosturl}}/uploads/{{item.path}}" class="pic"></image>
+              <image src="/images/del_icon1.png" class="del" catchtap="deleteimg" id="{{item.id}}" data-type="paizhaoimagecell"></image>
+            </view>
+
+            <view wx:for="{{imagecell}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+              <image src="{{item.path}}" class="pic"></image>
+              <image src="/images/del_icon1.png" class="del" catchtap="deleteimg" id="{{item.id}}" data-type="imagecell"></image>
+            </view>
+            <view class="camera" catchtap="chooseimg" wx:if="{{imagecell.length<9}}">
+              <image src="/images/icon-camera@2x.png"></image>
+            </view>
+
+            <view class="voice" bindtap="openvoice">
+              <image src="/images/icon_yuyin@2x.png"></image>
+            </view>
+          </view>
+
+          <view class="recording-whole" wx:if="{{voiceIsshow}}">
+            <view class="recording" catchtouchstart="startvoice" catchtouchend='endvoice' style="background:{{bg}}">
+              <image src="/images/icon_yuyin@2x.png"></image>
+              <view>{{voicetext}}</view>
+            </view>
+            <image src="/images/cloud.png" class="shangchuan" bindtap="uploadvoice"></image>
+          </view>
+
+        </view>
+
+      </view>
+    </view>
+  </view>
+
+  <!-- 第三个样式(走访) -->
+  <view wx:elif="{{taskId<17}}">
+    <view class="recordwhole">
+      <!-- <view class="record">
+        <i-icon type="enter" size="24" wx:if="{{leftarrow}}" />
+        <i-icon type="unfold" size="24" wx:else/>
+        <text>记录1</text>
+        <view class="delete">删除</view>
+      </view> -->
+
+      <view>
+        <view class="interviewtime">
+          <label>走访对象:</label>
+          <input type="text" placeholder="请输入走访对象" placeholder-class="assessor" bindinput="bindinput" data-type="visit_name"></input>
+        </view>
+
+        <view class="interviewtime">
+          <label>走访时间:</label>
+          <picker mode="multiSelector" value="{{dateTime}}" bindcolumnchange="changeDateTimeColumn" range="{{dateTimeArray}}" bindchange="changedateTime">
+            <view wx:if="{{!sendTimeFirst && !sendTimeName}}" class="colorgray">请选择走访时间</view>
+            <view wx:if="{{!sendTimeFirst && sendTimeName}}"></view>
+            <view wx:if="{{sendTimeFirst}}">
+              {{dateTimeArray[0][dateTime[0]]}}-{{dateTimeArray[1][dateTime[1]]}}-{{dateTimeArray[2][dateTime[2]]}} {{dateTimeArray[3][dateTime[3]]}}:{{dateTimeArray[4][dateTime[4]]}}
+            </view>
+          </picker>
+        </view>
+
+        <view class="interviewtime">
+          <label>走访地址:</label>
+          <input type="text" placeholder="请输入走访详细地址" placeholder-class="assessor" data-type="visit_address" bindinput="bindinput"></input>
+        </view>
+
+        <view class="interviewtime">
+          <label>是否阳性:</label>
+          <picker mode="selector" range='{{positive}}' bindchange="bindOrdinaryChange" data-item="positive">
+
+            <view wx:if="{{!positiveFirst && !positiveName}}" class="colorgray">请选择</view>
+            <view wx:if="{{!positiveFirst && positiveName}}"></view>
+            <view wx:if="{{positiveFirst}}">
+              {{positive[positiveinddex]}}</view>
+          </picker>
+        </view>
+
+        <view class="interviewtime modestyle">
+          <label>阳性说明:</label>
+          <textarea type="text" placeholder="请输入阳性说明" placeholder-class="assessor1" data-type="positive_state" bindinput="bindinput"></textarea>
+        </view>
+
+        <view class="interviewtime modestyle">
+          <label>走访结论:</label>
+          <textarea type="text" placeholder="请输入走访结论" placeholder-class="assessor1" data-type="visit_conclusion" bindinput="bindinput"></textarea>
+        </view>
+
+        <view class="investigation">
+          <label>调查材料:</label>
+          <view class="datalist">
+
+            <view wx:for="{{paizhaoimagecell}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+              <image src="{{hosturl}}/uploads/{{item.path}}" class="pic"></image>
+              <image src="/images/del_icon1.png" class="del" catchtap="deleteimg" id="{{item.id}}" data-type="paizhaoimagecell"></image>
+            </view>
+
+            <view wx:for="{{imagecell}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+              <image src="{{item.path}}" class="pic"></image>
+              <image src="/images/del_icon1.png" class="del" catchtap="deleteimg" id="{{item.id}}" data-type="imagecell"></image>
+            </view>
+            <view class="camera" catchtap="chooseimg" wx:if="{{imagecell.length<9}}">
+              <image src="/images/icon-camera@2x.png"></image>
+            </view>
+
+            <view class="voice" bindtap="openvoice">
+              <image src="/images/icon_yuyin@2x.png"></image>
+            </view>
+          </view>
+
+          <view class="recording-whole" wx:if="{{voiceIsshow}}">
+            <view class="recording" catchtouchstart="startvoice" catchtouchend='endvoice' style="background:{{bg}}">
+              <image src="/images/icon_yuyin@2x.png"></image>
+              <view>{{voicetext}}</view>
+            </view>
+            <image src="/images/cloud.png" class="shangchuan" bindtap="uploadvoice"></image>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 第四个样式 (商保排查)-->
+  <view wx:elif="{{taskId == 17}}">
+    <view class="recordwhole">
+      <!-- <view class="record">
+        <i-icon type="enter" size="24" wx:if="{{leftarrow}}" />
+        <i-icon type="unfold" size="24" wx:else/>
+        <text>记录1</text>
+        <view class="delete">删除</view>
+      </view> -->
+
+      <view>
+        <view class="interviewtime">
+          <label>公司名称:</label>
+          <input type="text" placeholder="请输入公司名称" placeholder-class="assessor" data-type="company" bindinput="bindinput"></input>
+        </view>
+
+        <view class="interviewtime modestyle">
+          <label>商保排查结论:</label>
+          <textarea type="text" placeholder="请输入商保排查结论" placeholder-class="assessor1" data-type="screen_conclusion" bindinput="bindinput"></textarea>
+        </view>
+
+        <view class="interviewtime">
+          <label>互助排查名称:</label>
+          <input type="text" placeholder="请输入互助排查名称" placeholder-class="assessor" data-type="help_screen_name" bindinput="bindinput"></input>
+        </view>
+
+        <view class="interviewtime modestyle">
+          <label>互助排查结论:</label>
+          <textarea type="text" placeholder="请输入互助排查结论" placeholder-class="assessor1" data-type="help_screen_conclusion" bindinput="bindinput"></textarea>
+        </view>
+
+        <view class="investigation">
+          <label>调查材料:</label>
+          <view class="datalist">
+
+            <view wx:for="{{paizhaoimagecell}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+              <image src="{{hosturl}}/uploads/{{item.path}}" class="pic"></image>
+              <image src="/images/del_icon1.png" class="del" catchtap="deleteimg" id="{{item.id}}" data-type="paizhaoimagecell"></image>
+            </view>
+
+            <view wx:for="{{imagecell}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+              <image src="{{item.path}}" class="pic"></image>
+              <image src="/images/del_icon1.png" class="del" catchtap="deleteimg" id="{{item.id}}" data-type="imagecell"></image>
+            </view>
+            <view class="camera" catchtap="chooseimg" wx:if="{{imagecell.length<9}}">
+              <image src="/images/icon-camera@2x.png"></image>
+            </view>
+
+            <view class="voice" bindtap="openvoice">
+              <image src="/images/icon_yuyin@2x.png"></image>
+            </view>
+          </view>
+
+          <view class="recording-whole" wx:if="{{voiceIsshow}}">
+            <view class="recording" catchtouchstart="startvoice" catchtouchend='endvoice' style="background:{{bg}}">
+              <image src="/images/icon_yuyin@2x.png"></image>
+              <view>{{voicetext}}</view>
+            </view>
+            <image src="/images/cloud.png" class="shangchuan" bindtap="uploadvoice"></image>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 第五个样式 (社保排查) -->
+  <view wx:elif="{{taskId == 18}}">
+    <view class="recordwhole">
+      <!-- <view class="record">
+        <i-icon type="enter" size="24" wx:if="{{leftarrow}}" />
+        <i-icon type="unfold" size="24" wx:else/>
+        <text>记录1</text>
+        <view class="delete">删除</view>
+      </view> -->
+
+      <view>
+        <view class="interviewtime">
+          <label>社保局名称:</label>
+          <input type="text" placeholder="请输入社保局名称" placeholder-class="assessor" data-type="social_security" bindinput="bindinput"></input>
+        </view>
+
+        <view class="interviewtime">
+          <label>排查时间:</label>
+          <picker mode="multiSelector" value="{{dateTime}}" bindcolumnchange="changeDateTimeColumn" range="{{dateTimeArray}}" bindchange="changedateTime">
+            <view wx:if="{{!sendTimeFirst && !sendTimeName}}" class="colorgray">请选择排查时间</view>
+            <view wx:if="{{!sendTimeFirst && sendTimeName}}"></view>
+            <view wx:if="{{sendTimeFirst}}">
+              {{dateTimeArray[0][dateTime[0]]}}-{{dateTimeArray[1][dateTime[1]]}}-{{dateTimeArray[2][dateTime[2]]}} {{dateTimeArray[3][dateTime[3]]}}:{{dateTimeArray[4][dateTime[4]]}}
+            </view>
+          </picker>
+        </view>
+
+        <view class="interviewtime">
+          <label>是否阳性:</label>
+          <picker mode="selector" range='{{positive}}' bindchange="bindOrdinaryChange" data-item="positive">
+
+            <view wx:if="{{!positiveFirst && !positiveName}}" class="colorgray">请选择</view>
+            <view wx:if="{{!positiveFirst && positiveName}}"></view>
+            <view wx:if="{{positiveFirst}}">
+              {{positive[positiveinddex]}}</view>
+          </picker>
+        </view>
+
+        <view class="interviewtime modestyle">
+          <label>阳性说明:</label>
+          <textarea type="text" placeholder="请输入阳性说明" placeholder-class="assessor1" data-type="positive_state" bindinput="bindinput"></textarea>
+        </view>
+
+        <view class="interviewtime modestyle">
+          <label>社保排查结论:</label>
+          <textarea type="text" placeholder="请输入社保排查结论" placeholder-class="assessor1" data-type="social_security_screen_conclusion" bindinput="bindinput"></textarea>
+        </view>
+
+        <view class="investigation">
+          <label>调查材料:</label>
+          <view class="datalist">
+
+            <view wx:for="{{paizhaoimagecell}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+              <image src="{{hosturl}}/uploads/{{item.path}}" class="pic"></image>
+              <image src="/images/del_icon1.png" class="del" catchtap="deleteimg" id="{{item.id}}" data-type="paizhaoimagecell"></image>
+            </view>
+
+            <view wx:for="{{imagecell}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+              <image src="{{item.path}}" class="pic"></image>
+              <image src="/images/del_icon1.png" class="del" catchtap="deleteimg" id="{{item.id}}" data-type="imagecell"></image>
+            </view>
+            <view class="camera" catchtap="chooseimg" wx:if="{{imagecell.length<9}}">
+              <image src="/images/icon-camera@2x.png"></image>
+            </view>
+
+            <view class="voice" bindtap="openvoice">
+              <image src="/images/icon_yuyin@2x.png"></image>
+            </view>
+          </view>
+
+          <view class="recording-whole" wx:if="{{voiceIsshow}}">
+            <view class="recording" catchtouchstart="startvoice" catchtouchend='endvoice' style="background:{{bg}}">
+              <image src="/images/icon_yuyin@2x.png"></image>
+              <view>{{voicetext}}</view>
+            </view>
+            <image src="/images/cloud.png" class="shangchuan" bindtap="uploadvoice"></image>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 第六个样式(体检机构排查) -->
+  <view wx:elif="{{taskId == 19}}">
+    <view class="recordwhole">
+      <!-- <view class="record">
+        <i-icon type="enter" size="24" wx:if="{{leftarrow}}" />
+        <i-icon type="unfold" size="24" wx:else/>
+        <text>记录1</text>
+        <view class="delete">删除</view>
+      </view> -->
+
+      <view>
+        <view class="interviewtime">
+          <label>体检机构名称:</label>
+          <input type="text" placeholder="请输入体检名称" placeholder-class="assessor" data-type="medical_org" bindinput="bindinput"></input>
+        </view>
+
+        <view class="interviewtime">
+          <label>排查时间:</label>
+          <picker mode="multiSelector" value="{{dateTime}}" bindcolumnchange="changeDateTimeColumn" range="{{dateTimeArray}}" bindchange="changedateTime">
+            <view wx:if="{{!sendTimeFirst && !sendTimeName}}" class="colorgray">请选择排查时间</view>
+            <view wx:if="{{!sendTimeFirst && sendTimeName}}"></view>
+            <view wx:if="{{sendTimeFirst}}">
+              {{dateTimeArray[0][dateTime[0]]}}-{{dateTimeArray[1][dateTime[1]]}}-{{dateTimeArray[2][dateTime[2]]}} {{dateTimeArray[3][dateTime[3]]}}:{{dateTimeArray[4][dateTime[4]]}}
+            </view>
+          </picker>
+        </view>
+        <view class="interviewtime">
+          <label>是否阳性:</label>
+          <picker mode="selector" range='{{positive}}' bindchange="bindOrdinaryChange" data-item="positive">
+
+            <view wx:if="{{!positiveFirst && !positiveName}}" class="colorgray">请选择</view>
+            <view wx:if="{{!positiveFirst && positiveName}}"></view>
+            <view wx:if="{{positiveFirst}}">
+              {{positive[positiveinddex]}}</view>
+          </picker>
+        </view>
+
+        <view class="interviewtime modestyle">
+          <label>阳性说明:</label>
+          <textarea type="text" placeholder="请输入阳性说明" placeholder-class="assessor1" data-type="is_positive" bindinput="bindinput"></textarea>
+        </view>
+
+        <view class="interviewtime modestyle">
+          <label>体检排查结论:</label>
+          <textarea type="text" placeholder="请输入体检排查结论" placeholder-class="assessor1" data-type="medical_screen_conclusion" bindinput="bindinput"></textarea>
+        </view>
+
+        <view class="investigation">
+          <label>调查材料:</label>
+          <view class="datalist">
+
+            <view wx:for="{{paizhaoimagecell}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+              <image src="{{hosturl}}/uploads/{{item.path}}" class="pic"></image>
+              <image src="/images/del_icon1.png" class="del" catchtap="deleteimg" id="{{item.id}}" data-type="paizhaoimagecell"></image>
+            </view>
+            <view wx:for="{{imagecell}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+              <image src="{{item.path}}" class="pic"></image>
+              <image src="/images/del_icon1.png" class="del" catchtap="deleteimg" id="{{item.id}}" data-type="imagecell"></image>
+            </view>
+            <view class="camera" catchtap="chooseimg" wx:if="{{imagecell.length<9}}">
+              <image src="/images/icon-camera@2x.png"></image>
+            </view>
+
+            <view class="voice" bindtap="openvoice">
+              <image src="/images/icon_yuyin@2x.png"></image>
+            </view>
+          </view>
+
+          <view class="recording-whole" wx:if="{{voiceIsshow}}">
+            <view class="recording" catchtouchstart="startvoice" catchtouchend='endvoice' style="background:{{bg}}">
+              <image src="/images/icon_yuyin@2x.png"></image>
+              <view>{{voicetext}}</view>
+            </view>
+            <image src="/images/cloud.png" class="shangchuan" bindtap="uploadvoice"></image>
+          </view>
+        </view>
+
+      </view>
+    </view>
+  </view>
+
+  <!-- 第七个样式(事故地点排查) -->
+  <view wx:elif="{{taskId == 20}}">
+    <view class="recordwhole">
+      <!-- <view class="record">
+        <i-icon type="enter" size="24" wx:if="{{leftarrow}}" />
+        <i-icon type="unfold" size="24" wx:else/>
+        <text>记录1</text>
+        <view class="delete">删除</view>
+      </view> -->
+      <view>
+        <view class="interviewtime">
+          <label>排查时间:</label>
+          <picker mode="multiSelector" value="{{dateTime}}" bindcolumnchange="changeDateTimeColumn" range="{{dateTimeArray}}" bindchange="changedateTime">
+            <view wx:if="{{!sendTimeFirst && !sendTimeName}}" class="colorgray">请选择排查时间</view>
+            <view wx:if="{{!sendTimeFirst && sendTimeName}}"></view>
+            <view wx:if="{{sendTimeFirst}}">
+              {{dateTimeArray[0][dateTime[0]]}}-{{dateTimeArray[1][dateTime[1]]}}-{{dateTimeArray[2][dateTime[2]]}} {{dateTimeArray[3][dateTime[3]]}}:{{dateTimeArray[4][dateTime[4]]}}
+            </view>
+          </picker>
+        </view>
+
+        <view class="interviewtime">
+          <label>事故地址:</label>
+          <input type="text" placeholder="请输入事故地址" placeholder-class="assessor" data-type="accident_address" bindinput="bindinput"></input>
+        </view>
+
+        <view class="interviewtime modestyle">
+          <label>排查结论:</label>
+          <textarea type="text" placeholder="请输入排查结论" placeholder-class="assessor1" data-type="screen_conclusion" bindinput="bindinput"></textarea>
+        </view>
+
+        <view class="investigation">
+          <label>调查材料:</label>
+          <view class="datalist">
+
+            <view wx:for="{{paizhaoimagecell}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+              <image src="{{hosturl}}/uploads/{{item.path}}" class="pic"></image>
+              <image src="/images/del_icon1.png" class="del" catchtap="deleteimg" id="{{item.id}}" data-type="paizhaoimagecell"></image>
+            </view>
+            <view wx:for="{{imagecell}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+              <image src="{{item.path}}" class="pic"></image>
+              <image src="/images/del_icon1.png" class="del" catchtap="deleteimg" id="{{item.id}}" data-type="imagecell"></image>
+            </view>
+            <view class="camera" catchtap="chooseimg" wx:if="{{imagecell.length<9}}">
+              <image src="/images/icon-camera@2x.png"></image>
+            </view>
+
+            <view class="voice" bindtap="openvoice">
+              <image src="/images/icon_yuyin@2x.png"></image>
+            </view>
+          </view>
+
+          <view class="recording-whole" wx:if="{{voiceIsshow}}">
+            <view class="recording" catchtouchstart="startvoice" catchtouchend='endvoice' style="background:{{bg}}">
+              <image src="/images/icon_yuyin@2x.png"></image>
+              <view>{{voicetext}}</view>
+            </view>
+            <image src="/images/cloud.png" class="shangchuan" bindtap="uploadvoice"></image>
+          </view>
+        </view>
+
+      </view>
+    </view>
+  </view>
+
+  <!-- 第八个样式(事故处理机构排查) -->
+  <view wx:elif="{{taskId == 21}}">
+    <view class="recordwhole">
+      <!-- <view class="record">
+        <i-icon type="enter" size="24" wx:if="{{leftarrow}}" />
+        <i-icon type="unfold" size="24" wx:else/>
+        <text>记录1</text>
+        <view class="delete">删除</view>
+      </view> -->
+
+      <view>
+        <view class="interviewtime">
+          <label>排查时间:</label>
+          <picker mode="multiSelector" value="{{dateTime}}" bindcolumnchange="changeDateTimeColumn" range="{{dateTimeArray}}" bindchange="changedateTime">
+            <view wx:if="{{!sendTimeFirst && !sendTimeName}}" class="colorgray">请选择排查时间</view>
+            <view wx:if="{{!sendTimeFirst && sendTimeName}}"></view>
+            <view wx:if="{{sendTimeFirst}}">
+              {{dateTimeArray[0][dateTime[0]]}}-{{dateTimeArray[1][dateTime[1]]}}-{{dateTimeArray[2][dateTime[2]]}} {{dateTimeArray[3][dateTime[3]]}}:{{dateTimeArray[4][dateTime[4]]}}
+            </view>
+          </picker>
+        </view>
+
+        <view class="interviewtime">
+          <label>处理机构:</label>
+          <input type="text" placeholder="请输入处理机构" placeholder-class="assessor" data-type="deal_org" bindinput="bindinput"></input>
+        </view>
+
+        <view class="interviewtime modestyle">
+          <label>排查结论:</label>
+          <textarea type="text" placeholder="请输入排查结论" placeholder-class="assessor1" data-type="screen_conclusion" bindinput="bindinput"></textarea>
+        </view>
+
+        <view class="investigation">
+          <label>调查材料:</label>
+          <view class="datalist">
+
+            <view wx:for="{{paizhaoimagecell}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+              <image src="{{hosturl}}/uploads/{{item.path}}" class="pic"></image>
+              <image src="/images/del_icon1.png" class="del" catchtap="deleteimg" id="{{item.id}}" data-type="paizhaoimagecell"></image>
+            </view>
+            <view wx:for="{{imagecell}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+              <image src="{{item.path}}" class="pic"></image>
+              <image src="/images/del_icon1.png" class="del" catchtap="deleteimg" id="{{item.id}}" data-type="imagecell"></image>
+            </view>
+            <view class="camera" catchtap="chooseimg" wx:if="{{imagecell.length<9}}">
+              <image src="/images/icon-camera@2x.png"></image>
+            </view>
+
+            <view class="voice" bindtap="openvoice">
+              <image src="/images/icon_yuyin@2x.png"></image>
+            </view>
+          </view>
+
+          <view class="recording-whole" wx:if="{{voiceIsshow}}">
+            <view class="recording" catchtouchstart="startvoice" catchtouchend='endvoice' style="background:{{bg}}">
+              <image src="/images/icon_yuyin@2x.png"></image>
+              <view>{{voicetext}}</view>
+            </view>
+            <image src="/images/cloud.png" class="shangchuan" bindtap="uploadvoice"></image>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <canvas class='canvas' style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;top:{{canvasHeight*2}}px;" canvas-id="firstCanvas" hidden="{{showcanvas}}"></canvas>
+
+
+  <!-- <view class="rejectmode">
+    <text>驳回意见:</text>
+    <text>无</text>
+  </view>
+  <view class="add">添加记录</view> -->
+</view>
+
+<button class="sure" bindtap="addsure">确定</button>

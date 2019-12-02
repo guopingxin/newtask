@@ -16,7 +16,8 @@ Page({
     businessmodeshow: false,
     businessmodeshow1: false,
     // businessmode: ['全部', '查勘定损', '车辆维修', '拖车', '事故救援', '调查', '人伤', '洗车', '搭电/换胎', '车辆检测', '代办年审', '代办服务', '疾病调查'],
-    businessmode: ['全部', '查勘定损', '疾病调查'],
+    // businessmode: ['全部', '查勘定损', '疾病调查'],
+    businessmode: [],
     frist: 0,
     tasklist: [],
     businessmode1: ['我的业务', '小组业务'],
@@ -30,7 +31,11 @@ Page({
     diseasesurvey: ['全部案件', '进行中', '待审核', '已结案'],
     casetype: [],
     diseaselist: [],
-    
+    spinShow:true,
+    key:'',  //业务模块的key/订单模块key=order
+    type:'',
+    page:1,
+    limit:""
   },
 
   /**
@@ -41,7 +46,7 @@ Page({
     that.data.userinfor = app.globalData.userinfor;
     that.setData({
       userType: that.data.userinfor.type
-    })
+    }) 
   },
 
   /**
@@ -50,122 +55,257 @@ Page({
   onShow: function() {
 
     var that = this;
-    if (that.data.businessname == '全部') {
-      home.lists(res => {
-        if (res.status == 1) {
+    that.data.businessmode=["全部"];
+    that.data.tasklist=[];
 
-          if(res.data.push){
-            if (res.data.push.length > 0) {
-              res.data.push.forEach((item, index) => {
-                item.datatype = "push"
-                that.data.tasklist.push(item)
-              })
-            }
-          }
+    that.getModule(response=>{
 
-          if (res.data.survey){
-            if (res.data.survey.length > 0) {
-              res.data.survey.forEach((item, index) => {
-                item.datatype = "survey"
-                that.data.tasklist.push(item)
-              })
-            }
-          }
-          
-          if (res.data.rescue){
-            if (res.data.rescue.length > 0) {
-              res.data.rescue.forEach((item, index) => {
-                item.datatype = "rescue"
-                that.data.tasklist.push(item)
-              })
-            }
-          }
-          
-          if (res.data.trailer){
-            if (res.data.trailer.length > 0) {
-              res.data.trailer.forEach((item, index) => {
-                item.datatype = "trailer"
-                that.data.tasklist.push(item)
-              })
-            }
-          }
-          
-          if (res.order){
-            if (res.order.length > 0) {
-              res.order.forEach((item, index) => {
-                item.datatype = "order";
-
-                that.data.tasklist.push(item)
-              })
-            }
-          }
-          
-          that.setData({
-            tasklist: that.data.tasklist
-          }) 
+      response.forEach((item,index)=>{
+        that.data.businessmode.push(item.name)
+        if (item.key =="survey"){
+          that.data.surveybusinessId = item.id
+        } else if (item.key == "sickness"){
+          that.data.sicknessbusinessId = item.id
         }
       })
-    } else if (that.data.businessname == '查勘定损') {
 
-      home.survey(that, res => {
-        if (res.status == 1) {
-
-          res.survey.forEach((item,index)=>{
-            item.datatype = "survey"
-          })
-          that.setData({
-            tasklist: res.survey
-          })
-        }
+      that.setData({
+        businessmode:that.data.businessmode
       })
-    } else if (that.data.businessname == '车辆维修') {
 
-      home.push(that, res => {
-        if (res.status == 1) {
-          that.setData({
-            tasklist: res.push
-          })
-        }
-      })
-    } else if (that.data.businessname == '拖车') {
+      if (that.data.businessname == '全部') {
+
+        home.lists(that, res => {
+          if (res.status == 1) {
+
+            // if (res.data.work.push){
+            //   if (res.data.work.push.length > 0) {
+            //     res.data.work.push.forEach((item, index) => {
+            //       item.datatype = "push"
+            //       that.data.tasklist.push(item)
+            //     })
+            //   }
+            // }
+
+            if (res.data.work.survey) {
+              if (res.data.work.survey.length > 0) {
+
+                res.data.work.survey.forEach((item, index) => {
+                  item.datatype = "survey"
+                  item.businessId = that.data.surveybusinessId
+                  that.data.tasklist.push(item)
+                })
+              }
+            }
+
+            if (res.data.work.sickness) {
+              if (res.data.work.sickness.length > 0) {
+
+                that.data.diseaselist = res.data.work.sickness;
+
+                that.data.diseaselist.forEach((item, index) => {
+
+                  var sick_address = "diseaselist[" + index + "].sick_address";
+                  var sick_city = "diseaselist[" + index + "].city";
+                  var datatype = "diseaselist[" + index + "].datatype"
+                  var sicknessbusinessId = "diseaselist[" + index + "].businessId"
+
+                  
+                  var address = item.sick_address.split("-")[0];
+                  var city = item.sick_address.split("-")[1];
+
+                  that.setData({
+                    [sick_address]: address,
+                    [sick_city]: city,
+                    [datatype]: "sickness",
+                    [sicknessbusinessId]: that.data.sicknessbusinessId
+                  })
+                  that.data.tasklist.push(item)
+                })
+              }
+
+            }
+
+            // if (res.data.work.rescue){
+            //   if (res.data.rescue.length > 0) {
+            //     res.data.rescue.forEach((item, index) => {
+            //       item.datatype = "rescue"
+            //       that.data.tasklist.push(item)
+            //     })
+            //   }
+            // }
+
+            // if (res.data.trailer){
+            //   if (res.data.trailer.length > 0) {
+            //     res.data.trailer.forEach((item, index) => {
+            //       item.datatype = "trailer"
+            //       that.data.tasklist.push(item)
+            //     })
+            //   }
+            // }
 
 
-    } else if (that.data.businessname == '疾病调查'){
-      home.diseasesurvey(that, res => {
-        if (res.status == 1) {
 
-          that.data.diseaselist = res.data;
+            // if (res.data.order){
+            //   if (res.order.length > 0) {
+            //     res.order.forEach((item, index) => {
+            //       item.datatype = "order";
 
-          res.data.forEach((item, index) => {
+            //       that.data.tasklist.push(item)
+            //     })
+            //   }
+            // }
 
-            var sick_address = "diseaselist[" + index + "].sick_address";
-            var sick_city = "diseaselist[" + index + "].city";
-            var datatype = "diseaselist[" + index + "].datatype"
-
-            var address = item.sick_address.split("-")[0];
-            var city = item.sick_address.split("-")[1];
 
             that.setData({
-              [sick_address]: address,
-              [sick_city]: city,
-              [datatype]: "rescue"
+              spinShow: false,
+              tasklist: that.data.tasklist
             })
-          })
+          }
+        })
+      } else if (that.data.businessname == '查勘定损') {
 
-          that.setData({
-            tasklist: that.data.diseaselist,
-          })
+        that.data.key = "work";
+        that.data.type = "survey"
 
-          console.log(that.data.diseaselist)
+        home.lists(that, res => {
 
-        }
-      })
-    }
+          if (res.status == 1) {
+
+            if (res.data.data) {
+              if (res.data.data.length > 0) {
+                res.data.data.forEach((item, index) => {
+                  item.datatype = "survey",
+                  item.businessId = that.data.surveybusinessId
+                  that.data.tasklist.push(item)
+                })
+
+                that.setData({
+                  tasklist: res.data.data,
+                  businessname: '查勘定损',
+                  casetype: that.data.surveymode
+                })
+              } else {
+
+                that.setData({
+                  tasklist: res.data.data,
+                  businessname: '查勘定损',
+                  casetype: that.data.surveymode
+                })
+              }
+            }
+          }
+
+        })
+
+        // home.lists(that, res => {
+        //   if (res.status == 1) {
+
+        //     res.data.data.forEach((item,index)=>{
+        //       item.datatype = "survey"
+        //     })
+        //     that.setData({
+        //       tasklist: res.survey
+        //     })
+        //   }
+        // })
+
+
+
+      } else if (that.data.businessname == '车辆维修') {
+
+        home.push(that, res => {
+          if (res.status == 1) {
+            that.setData({
+              tasklist: res.push
+            })
+          }
+        })
+      } else if (that.data.businessname == '拖车') {
+
+
+      } else if (that.data.businessname == '疾病调查') {
+
+        that.data.key = 'work';
+        that.data.type = 'sickness';
+
+        home.lists(that, res => {
+          if (res.status == 1) {
+
+            that.data.diseaselist = res.data.data;
+
+            res.data.data.forEach((item, index) => {
+
+              var sick_address = "diseaselist[" + index + "].sick_address";
+              var sick_city = "diseaselist[" + index + "].city";
+              var datatype = "diseaselist[" + index + "].datatype";
+              var sicknessbusinessId = "diseaselist[" + index + "].businessId"
+
+              var address = item.sick_address.split("-")[0];
+              var city = item.sick_address.split("-")[1];
+
+              that.setData({
+                [sick_address]: address,
+                [sick_city]: city,
+                [datatype]: "sickness",
+                [sicknessbusinessId]: that.data.sicknessbusinessId
+              })
+            })
+            that.setData({
+              tasklist: that.data.diseaselist,
+              businessname: '疾病调查',
+              casetype: that.data.diseasesurvey
+            })
+
+            console.log(that.data.diseaselist)
+
+          }
+        })
+
+
+        // home.diseasesurvey(that, res => {
+        //   if (res.status == 1) {
+
+        //     that.data.diseaselist = res.data;
+
+        //     res.data.forEach((item, index) => {
+
+        //       var sick_address = "diseaselist[" + index + "].sick_address";
+        //       var sick_city = "diseaselist[" + index + "].city";
+        //       var datatype = "diseaselist[" + index + "].datatype";
+        //       var sicknessbusinessId = "diseaselist[" + index + "].sicknessbusinessId"
+
+        //       var address = item.sick_address.split("-")[0];
+        //       var city = item.sick_address.split("-")[1];
+
+        //       that.setData({
+        //         [sick_address]: address,
+        //         [sick_city]: city,
+        //         [datatype]: "rescue",
+        //         [sicknessbusinessId]: that.data.sicknessbusinessId
+        //       })
+        //     })
+
+        //     that.setData({
+        //       tasklist: that.data.diseaselist,
+        //     })
+
+        //     console.log(that.data.diseaselist)
+
+        //   }
+        // })
+      }
+      
+    });
+
+
   },
 
   //添加案件
   addcase: function() {
     var that = this;
+
+    console.log(that.data.businessmode[that.data.frist]);
 
     if (that.data.businessmode[that.data.frist] == '车辆维修') {
 
@@ -176,7 +316,7 @@ Page({
     } else if (that.data.businessmode[that.data.frist] == '查勘定损') {
 
       wx.navigateTo({
-        url: '../businessmode/checkloss/addcheckloss/addcheckloss',
+        url: '../businessmode/checkloss/addcheckloss/addcheckloss?businessId='+that.data.surveybusinessId,
       })
 
     }
@@ -218,31 +358,63 @@ Page({
       // that.setData({
       //   tasklist: that.data.total
       // })
+      that.data.key = "work"
+      that.data.type = "survey"
 
-      home.survey(that, res => {
+      home.lists(that, res => {
         if (res.status == 1) {
 
-          for (var item in res.survey) {
+          for (var item in res.data.data) {
+
             if (index == 1) {
-              if (res.survey[item].type == 0) {
-                that.data.total.push(res.survey[item])
+              if (res.data.data[item].type == 0) {
+                that.data.total.push(res.data.data[item])
+
               }
             } else if (index == 2) {
-              if (res.survey[item].type == 1 || res.survey[item].type == 2) {
-                that.data.total.push(res.survey[item])
+              if (res.data.data[item].type == 1 || res.data.data[item].type == 2) {
+                that.data.total.push(res.data.data[item])
               }
             } else {
-              that.data.total.push(res.survey[item])
+              that.data.total.push(res.data.data[item])
             }
-            res.survey[item].datatype = 'survey'
+            res.data.data[item].datatype = 'survey'
+            res.data.data[item].businessId = that.data.surveybusinessId
           }
           that.setData({
             tasklist: that.data.total
           })
 
-          console.log("hh", that.data.tasklist)
+        }else{
+
         }
       })
+      
+
+      // home.survey(that, res => {
+      //   if (res.status == 1) {
+
+      //     for (var item in res.survey) {
+      //       if (index == 1) {
+      //         if (res.survey[item].type == 0) {
+      //           that.data.total.push(res.survey[item])
+      //         }
+      //       } else if (index == 2) {
+      //         if (res.survey[item].type == 1 || res.survey[item].type == 2) {
+      //           that.data.total.push(res.survey[item])
+      //         }
+      //       } else {
+      //         that.data.total.push(res.survey[item])
+      //       }
+      //       res.survey[item].datatype = 'survey'
+      //     }
+      //     that.setData({
+      //       tasklist: that.data.total
+      //     })
+
+      //     console.log("hh", that.data.tasklist)
+      //   }
+      // })
 
     } else if (that.data.businessmode[that.data.frist] == "疾病调查") {
 
@@ -264,6 +436,8 @@ Page({
             that.data.total.push(that.data.diseaselist[item])
           }
         }
+
+        that.data.diseaselist[item].sicknessbusinessId = that.data.sicknessbusinessId;
       }
 
       that.setData({
@@ -317,22 +491,55 @@ Page({
         surveymodeshow: true
       })
 
-      home.survey(that, res => {
+      that.data.key ="work"
+      that.data.type = "survey"
 
-        if (res.status == 1) {
+      home.lists(that, res=>{
+        
+        if(res.status == 1){
 
-          res.survey.forEach((item,index)=>{
-            item.datatype = 'survey'
-          })
+          if (res.data.data) {
+            if (res.data.data.length > 0) {
+              res.data.data.forEach((item, index) => {
+                item.datatype = "survey"
+                item.businessId = that.data.surveybusinessId
+                that.data.tasklist.push(item)
+              })
 
-          that.setData({
-            tasklist: res.survey,
-            businessname: '查勘定损',
-            casetype: that.data.surveymode
-          })
+              that.setData({
+                tasklist: res.data.data,
+                businessname: '查勘定损',
+                casetype: that.data.surveymode
+              })
+            }else{
 
+              that.setData({
+                tasklist: res.data.data,
+                businessname: '查勘定损',
+                casetype: that.data.surveymode
+              })
+            }
+          }
         }
+        
       })
+
+      // home.survey(that, res => {
+
+      //   if (res.status == 1) {
+
+      //     res.survey.forEach((item,index)=>{
+      //       item.datatype = 'survey'
+      //     })
+
+      //     that.setData({
+      //       tasklist: res.survey,
+      //       businessname: '查勘定损',
+      //       casetype: that.data.surveymode
+      //     })
+
+      //   }
+      // })
 
     } else if (that.data.businessmode[e.currentTarget.dataset.index] == "车辆维修") {
 
@@ -381,16 +588,21 @@ Page({
         surveymodeshow: true
       })
 
-      home.diseasesurvey(that, res => {
+      that.data.key = 'work';
+      that.data.type = 'sickness'
+
+      home.lists(that, res => {
         if (res.status == 1) {
 
-          that.data.diseaselist = res.data;
+          that.data.diseaselist = res.data.data;
 
-          res.data.forEach((item, index) => {
+          res.data.data.forEach((item, index) => {
 
             var sick_address = "diseaselist[" + index + "].sick_address";
             var sick_city = "diseaselist[" + index + "].city";
             var datatype = "diseaselist[" + index + "].datatype"
+            var sicknessbusinessId = "diseaselist[" + index + "].businessId"
+
 
             var address = item.sick_address.split("-")[0];
             var city = item.sick_address.split("-")[1];
@@ -398,7 +610,8 @@ Page({
             that.setData({
               [sick_address]: address,
               [sick_city]: city,
-              [datatype]: "rescue"
+              [datatype]: "sickness",
+              [sicknessbusinessId]: that.data.sicknessbusinessId
             })
           })
           that.setData({
@@ -417,63 +630,120 @@ Page({
         surveymodeshow: false
       })
 
-      home.lists(res => {
+      that.data.key = "";
+      that.data.type = ""
+
+      home.lists(that, res => {
         if (res.status == 1) {
 
-          if (res.data.push){
-            if (res.data.push.length > 0) {
+          // if (res.data.work.push){
+          //   if (res.data.work.push.length > 0) {
+          //     res.data.work.push.forEach((item, index) => {
+          //       item.datatype = "push"
+          //       that.data.tasklist.push(item)
+          //     })
+          //   }
+          // }
 
-              res.data.push.forEach((item, index) => {
-                item.datatype = "push"
-                that.data.tasklist.push(item)
-              })
-            }
-          }
-
-          if (res.data.survey){
-            if (res.data.survey.length > 0) {
-              res.data.survey.forEach((item, index) => {
+          if (res.data.work.survey) {
+            if (res.data.work.survey.length > 0) {
+              res.data.work.survey.forEach((item, index) => {
                 item.datatype = "survey"
                 that.data.tasklist.push(item)
               })
             }
           }
 
-          if (res.data.rescue){
-            if (res.data.rescue.length > 0) {
-              res.data.rescue.forEach((item, index) => {
-                item.datatype = "rescue"
+          if (res.data.work.sickness) {
+            if (res.data.work.sickness.length > 0) {
+
+              that.data.diseaselist = res.data.work.sickness;
+
+              that.data.diseaselist.forEach((item, index) => {
+
+                var sick_address = "diseaselist[" + index + "].sick_address";
+                var sick_city = "diseaselist[" + index + "].city";
+                var datatype = "diseaselist[" + index + "].datatype";
+                var sicknessbusinessId = "diseaselist[" + index + "].businessId"
+
+                var address = item.sick_address.split("-")[0];
+                var city = item.sick_address.split("-")[1];
+
+                that.setData({
+                  [sick_address]: address,
+                  [sick_city]: city,
+                  [datatype]: "sickness",
+                  [sicknessbusinessId]: that.data.sicknessbusinessId
+                })
                 that.data.tasklist.push(item)
               })
             }
           }
 
-          if (res.data.trailer){
-            if (res.data.trailer.length > 0) {
-              res.data.trailer.forEach((item, index) => {
-                item.datatype = "trailer"
-                that.data.tasklist.push(item)
-              })
-            }
-          }
-          
-          if (res.order){
-            if (res.order.length > 0) {
-              res.order.forEach((item, index) => {
-                item.datatype = "order";
-
-                that.data.tasklist.push(item)
-              })
-            }
-          }
-        
           that.setData({
+            spinShow: false,
             tasklist: that.data.tasklist
           })
-
-          console.log(that.data.tasklist)
         }
       })
+
+      // home.lists(res => {
+      //   if (res.status == 1) {
+
+      //     if (res.data.push){
+      //       if (res.data.push.length > 0) {
+
+      //         res.data.push.forEach((item, index) => {
+      //           item.datatype = "push"
+      //           that.data.tasklist.push(item)
+      //         })
+      //       }
+      //     }
+
+      //     if (res.data.survey){
+      //       if (res.data.survey.length > 0) {
+      //         res.data.survey.forEach((item, index) => {
+      //           item.datatype = "survey"
+      //           that.data.tasklist.push(item)
+      //         })
+      //       }
+      //     }
+
+      //     if (res.data.rescue){
+      //       if (res.data.rescue.length > 0) {
+      //         res.data.rescue.forEach((item, index) => {
+      //           item.datatype = "rescue"
+      //           that.data.tasklist.push(item)
+      //         })
+      //       }
+      //     }
+
+      //     if (res.data.trailer){
+      //       if (res.data.trailer.length > 0) {
+      //         res.data.trailer.forEach((item, index) => {
+      //           item.datatype = "trailer"
+      //           that.data.tasklist.push(item)
+      //         })
+      //       }
+      //     }
+          
+      //     if (res.order){
+      //       if (res.order.length > 0) {
+      //         res.order.forEach((item, index) => {
+      //           item.datatype = "order";
+
+      //           that.data.tasklist.push(item)
+      //         })
+      //       }
+      //     }
+        
+      //     that.setData({
+      //       tasklist: that.data.tasklist
+      //     })
+
+      //     console.log(that.data.tasklist)
+      //   }
+      // })
     }
 
     that.setData({
@@ -498,17 +768,50 @@ Page({
       } else {
         that.data.group_id = that.data.userinfor.group_id
       }
-      home.survey(that, res => {
-        if (res.status == 1) {
+      // home.survey(that, res => {
+      //   if (res.status == 1) {
           
-          res.survey.forEach((item,index)=>{
-            item.datatype = 'survey'
-          })
+      //     res.survey.forEach((item,index)=>{
+      //       item.datatype = 'survey'
+      //     })
 
-          that.setData({
-            tasklist: res.survey
-          })
+      //     that.setData({
+      //       tasklist: res.survey
+      //     })
+      //   }
+      // })
+
+      that.data.key = "work"
+      that.data.type = "survey"
+
+      home.lists(that, res => {
+
+        if (res.status == 1) {
+
+          if (res.data.data) {
+            if (res.data.data.length > 0) {
+              res.data.data.forEach((item, index) => {
+                item.datatype = "survey"
+                item.businessId = that.data.surveybusinessId
+                that.data.tasklist.push(item)
+              })
+
+              that.setData({
+                tasklist: res.data.data,
+                businessname: '查勘定损',
+                casetype: that.data.surveymode
+              })
+            } else {
+
+              that.setData({
+                tasklist: res.data.data,
+                businessname: '查勘定损',
+                casetype: that.data.surveymode
+              })
+            }
+          }
         }
+
       })
     } else if (that.data.businessmode[that.data.frist] == "车辆维修") {
 
@@ -537,29 +840,66 @@ Page({
         that.data.group_id = that.data.userinfor.group_id
       }
 
-      home.diseasesurvey(that, res => {
+      // home.diseasesurvey(that, res => {
+      //   if (res.status == 1) {
+
+      //     that.data.diseaselist = res.data;
+
+      //     res.data.forEach((item, index) => {
+
+      //       var sick_address = "diseaselist[" + index + "].sick_address";
+      //       var sick_city = "diseaselist[" + index + "].city";
+      //       var datatype = "diseaselist[" + index + "].datatype"
+
+      //       var address = item.sick_address.split("-")[0];
+      //       var city = item.sick_address.split("-")[1];
+            
+      //       that.setData({
+      //         [sick_address]: address,
+      //         [sick_city]: city,
+      //         [datatype]:"rescue"
+      //       })
+      //     })
+
+      //     that.setData({
+      //       tasklist: that.data.diseaselist,
+      //     })
+
+      //     console.log(that.data.diseaselist)
+
+      //   }
+      // })
+
+      that.data.key = 'work';
+      that.data.type = 'sickness'
+
+      home.lists(that, res => {
         if (res.status == 1) {
 
-          that.data.diseaselist = res.data;
+          that.data.diseaselist = res.data.data;
 
-          res.data.forEach((item, index) => {
+          res.data.data.forEach((item, index) => {
 
             var sick_address = "diseaselist[" + index + "].sick_address";
             var sick_city = "diseaselist[" + index + "].city";
             var datatype = "diseaselist[" + index + "].datatype"
+            var sicknessbusinessId = "diseaselist[" + index + "].businessId"
+
 
             var address = item.sick_address.split("-")[0];
             var city = item.sick_address.split("-")[1];
-            
+
             that.setData({
               [sick_address]: address,
               [sick_city]: city,
-              [datatype]:"rescue"
+              [datatype]: "sickness",
+              [sicknessbusinessId]: that.data.sicknessbusinessId
             })
           })
-
           that.setData({
             tasklist: that.data.diseaselist,
+            businessname: '疾病调查',
+            casetype: that.data.diseasesurvey
           })
 
           console.log(that.data.diseaselist)
@@ -568,52 +908,150 @@ Page({
       })
     }else{
 
-      home.lists(res => {
+      home.lists(that, res => {
         if (res.status == 1) {
 
-          if (res.data.push.length > 0) {
+          // if (res.data.work.push){
+          //   if (res.data.work.push.length > 0) {
+          //     res.data.work.push.forEach((item, index) => {
+          //       item.datatype = "push"
+          //       that.data.tasklist.push(item)
+          //     })
+          //   }
+          // }
 
-            res.data.push.forEach((item, index) => {
-              item.datatype = "push"
-              that.data.tasklist.push(item)
-            })
-          }
-          if (res.data.survey.length > 0) {
-            res.data.survey.forEach((item, index) => {
-              item.datatype = "survey"
-              that.data.tasklist.push(item)
-            })
-          }
+          if (res.data.work.survey) {
+            if (res.data.work.survey.length > 0) {
 
-          if (res.data.rescue.length > 0) {
-            res.data.rescue.forEach((item, index) => {
-              item.datatype = "rescue"
-              that.data.tasklist.push(item)
-            })
-          }
-
-          if (res.data.trailer.length > 0) {
-            res.data.trailer.forEach((item, index) => {
-              item.datatype = "trailer"
-              that.data.tasklist.push(item)
-            })
+              res.data.work.survey.forEach((item, index) => {
+                item.datatype = "survey"
+                item.businessId = that.data.surveybusinessId
+                that.data.tasklist.push(item)
+              })
+            }
           }
 
-          if (res.order.length > 0) {
-            res.order.forEach((item, index) => {
-              item.datatype = "order";
+          if (res.data.work.sickness) {
+            if (res.data.work.sickness.length > 0) {
 
-              that.data.tasklist.push(item)
-            })
+              that.data.diseaselist = res.data.work.sickness;
+
+              that.data.diseaselist.forEach((item, index) => {
+
+                var sick_address = "diseaselist[" + index + "].sick_address";
+                var sick_city = "diseaselist[" + index + "].city";
+                var datatype = "diseaselist[" + index + "].datatype";
+                var sicknessbusinessId = "diseaselist[" + index + "].businessId"
+
+                var address = item.sick_address.split("-")[0];
+                var city = item.sick_address.split("-")[1];
+
+                that.setData({
+                  [sick_address]: address,
+                  [sick_city]: city,
+                  [datatype]: "sickness",
+                  [sicknessbusinessId]: that.data.sicknessbusinessId
+                })
+                that.data.tasklist.push(item)
+              })
+            }
           }
+
+          // if (res.data.work.rescue){
+          //   if (res.data.rescue.length > 0) {
+          //     res.data.rescue.forEach((item, index) => {
+          //       item.datatype = "rescue"
+          //       that.data.tasklist.push(item)
+          //     })
+          //   }
+          // }
+
+          // if (res.data.trailer){
+          //   if (res.data.trailer.length > 0) {
+          //     res.data.trailer.forEach((item, index) => {
+          //       item.datatype = "trailer"
+          //       that.data.tasklist.push(item)
+          //     })
+          //   }
+          // }
+
+
+
+          // if (res.data.order){
+          //   if (res.order.length > 0) {
+          //     res.order.forEach((item, index) => {
+          //       item.datatype = "order";
+
+          //       that.data.tasklist.push(item)
+          //     })
+          //   }
+          // }
+
 
           that.setData({
+            spinShow: false,
             tasklist: that.data.tasklist
           })
-
-          console.log(that.data.tasklist)
         }
       })
+
+      // home.lists(res => {
+      //   if (res.status == 1) {
+
+      //     if (res.data.push.length > 0) {
+
+      //       res.data.push.forEach((item, index) => {
+      //         item.datatype = "push"
+      //         that.data.tasklist.push(item)
+      //       })
+      //     }
+      //     if (res.data.survey.length > 0) {
+      //       res.data.survey.forEach((item, index) => {
+      //         item.datatype = "survey"
+      //         that.data.tasklist.push(item)
+      //       })
+      //     }
+
+      //     if (res.data.rescue.length > 0) {
+      //       res.data.rescue.forEach((item, index) => {
+      //         item.datatype = "rescue"
+      //         that.data.tasklist.push(item)
+      //       })
+      //     }
+
+      //     if (res.data.trailer.length > 0) {
+      //       res.data.trailer.forEach((item, index) => {
+      //         item.datatype = "trailer"
+      //         that.data.tasklist.push(item)
+      //       })
+      //     }
+
+      //     if (res.order.length > 0) {
+      //       res.order.forEach((item, index) => {
+      //         item.datatype = "order";
+
+      //         that.data.tasklist.push(item)
+      //       })
+      //     }
+
+      //     that.setData({
+      //       tasklist: that.data.tasklist
+      //     })
+
+      //     console.log(that.data.tasklist)
+      //   }
+      // })
     }
   },
+
+  //用户模块
+  getModule(callback){
+    var that = this
+    home.getUserModule(res=>{
+      console.log(res)
+      if(res.status == 1){
+        callback && callback(res.data)
+      }
+    })
+  }
 })

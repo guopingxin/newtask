@@ -1,0 +1,180 @@
+/* pages/businessmode/diseasesurvey/addphoto/addphoto.wxss */
+.topmode{
+  width: 100%;
+  height: 60px;
+}
+
+camera{
+  position: relative
+}
+
+.left_arrows{
+
+  position: fixed;
+  left: 6%;
+  top:6%;
+  width: 3%;
+  height: 2.5%;
+}
+
+.faBack{
+  position: fixed;
+  bottom:110px;
+  width: 100%;
+  height: 30px; 
+  background: #000;
+ 
+}
+.btn{
+  width:86%;
+  background: #3891F8;
+  color:#fff;
+  margin:10px auto;
+}
+.back{
+  position: absolute;
+  display: inline-block;
+  width:30px;
+  height: 30px;
+  right:14px;
+  bottom:0px;
+}
+.falshContrl{
+  display: inline-block;
+  width:100%;
+  height: 30px;
+}
+.flashAuto{
+  right:54px;
+}
+.flashOff{
+  right:54px;
+}
+.flashUp{
+  right:54px;
+}
+
+.allClassify{
+  padding-top:10px;
+  background: rebeccapurple;
+  width:100%;
+  position: absolute;
+  bottom: 110px;
+  height: 90px;
+  color:#fff;
+  background: #000
+}
+.eachClassify{
+  font-weight: 500;
+  display:inline-block;
+  width:33.3%;
+  font-size: 14px;
+  text-align:center;
+  line-height: 30px;
+}
+.eachClassify:active{
+  color:#3891F8;
+}
+.photoClassify{
+  display: inline-block;
+  width:70%;
+  color:#fff;
+  line-height: 30px;
+  font-size:14px;
+}
+.choosing{
+   display: inline-block;
+   line-height: 30px;
+   padding-left:8px;
+}
+.setCameral{
+ position: absolute;
+ bottom: 0px;
+ right:0px;
+  display: inline-block;
+  width:60%;
+   line-height: 30px;
+   height: 30px;
+}
+.text{
+  display: inline-block;
+  position: absolute;
+  line-height: 30px;
+  color: #fff;
+  left:90px;
+  font-size:12px;
+}
+.upText{
+   left:34%;
+}
+.autoText{
+  left:16%;
+}
+.closeText{
+  left:50%;
+}
+.imgBox{
+  display: inline-block;
+  width:100%;
+}
+.imageBox{
+  display: inline-block;
+  width:33.3%;
+  text-align: center;
+  margin:10px 0px;
+}
+.closeBox{
+  display: inline-block;
+  width:77px;
+  height: 77px;
+  position: relative;
+}
+.deleteImg{
+  display: inline-block;
+  width:20px;
+  height: 20px;
+  position: absolute;
+  top:-10px;
+  right: -24px;
+  border-radius: 50%;
+}
+.pic{
+  display: inline-block;
+  width:90px;
+  height: 70px;
+}
+.btnContain{
+  display: inline-block;
+  width:33.3%;
+  margin-top:12px;
+  text-align: center;
+}
+
+
+.blueColor{
+  color:#3891F8;
+  font-size:16px;
+}
+.btnCell{
+  width:100%;
+  position: absolute;
+  bottom: 10px;
+  left: 0px;
+  text-align: center;
+}
+.photoBtn{
+  margin: 0px auto;
+   width:66px;
+  height: 66px;
+}
+.photoCell{
+  position: fixed;
+  left:0px;
+  bottom:0px;
+  width:100%;
+  height: 110px;
+  background:#000;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}

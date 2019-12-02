@@ -79,7 +79,8 @@ Page({
       dateTimeArray: obj.dateTimeArray,
       dateTime: obj.dateTime,
       taskname: app.globalData.userinfor.nickname,
-      taskjob_no: app.globalData.userinfor.job_no
+      taskjob_no: app.globalData.userinfor.job_no,
+      businessId: options.businessId
     })
 
     // 从编辑进来
@@ -288,10 +289,10 @@ Page({
       if (res.status == 1) {
         let array = []
 
-        res.insurance.forEach((item, index) => {
+        res.data.forEach((item, index) => {
           array.push(item.name)
         })
-        this.data.insuranceList = res.insurance
+        this.data.insuranceList = res.data
         this.setData({
           insuranceNameList: array
         })
@@ -521,7 +522,7 @@ Page({
     let params = {}
     if (this.data.hasInsuranceName == '中国平安') {
       params = {
-        // key: 'survey',
+        key: 'survey',
         type: this.data.type,
         insurance_id: this.data.insuranceId,
         survey_date: this.data.surveyTime,
@@ -536,7 +537,7 @@ Page({
       }
     } else if (this.data.hasInsuranceName == '中国太平') {
       params = {
-        // key: 'survey',
+        key: 'survey',
         type: this.data.type,
         insurance_id: this.data.insuranceId,
         report_no: this.data.reportNo,
@@ -549,7 +550,7 @@ Page({
       }
     } else {
       params = {
-        // key: 'survey',
+        key: 'survey',
         type: this.data.type,
         insurance_id: this.data.insuranceId,
         send_user: this.data.dispatchedWorkers,
@@ -569,7 +570,7 @@ Page({
         wx.hideLoading()
         if (res.status == 1) {
           wx.redirectTo({
-            url: '../checkloss?listId=' + params.id,
+            url: '../checkloss?listId=' + params.id + "&businessId=" + this.data.businessId,
           })
         } else {
           wx.showToast({
@@ -584,7 +585,7 @@ Page({
         if (res.status == 1) {
 
           wx.redirectTo({
-            url: '../checkloss?listId='+res.id,
+            url: '../checkloss?listId=' + res.data.id + "&businessId=" + this.data.businessId,
           })
 
         } else {

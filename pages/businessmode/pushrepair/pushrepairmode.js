@@ -72,13 +72,15 @@ class Pushrepair extends Base{
   }
 
   //推修分配作业员
-  allot(url,id, taskid, callback){
+  allot(url,id, taskid,key, callback){
     var params = {
       url: url,
       type: 'POST',
+      auth:true,
       data: {
         id: id,
-        task_id: taskid
+        task_id: taskid,
+        key:key
       },
       sCallback: callback
     }
@@ -88,8 +90,10 @@ class Pushrepair extends Base{
   //获取推修分配人员列表
   taskslist(callback){
     var params = {
-      url: '/task/base/tasks',
+      // url: '/task/base/tasks',
+      url:'/api/work/tasks',
       type: 'GET',
+      auth:true,
       sCallback: callback
     }
     this.request(params);

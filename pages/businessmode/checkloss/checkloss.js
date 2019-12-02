@@ -32,8 +32,9 @@ Page({
     showQrCode: false,
     serviceOperation: false,
 
-    //明细列表
-    detailedlist:[]
+    showDetailed: false
+    
+    
   },
 
   /**
@@ -45,7 +46,8 @@ Page({
     this.setData({
       userid: app.globalData.userinfor.id,
       usertype: app.globalData.userinfor.type,
-      imgUrl: hostName + '/uploads/work/'
+      imgUrl:'http://cdn.feecgo.com/uploads/',
+      businessId: options.businessId
     })
   },
 
@@ -61,101 +63,193 @@ Page({
   getDetails() {
     // let key = 'survey'
     // let id = 1
-    checkloss.getBusinessDetail(this.data.listId, res => {
+    let steps = []
+    let ckzp01 = {
+        title: '',
+        picture: []
+      }, // 人车合一
+      ckzp02 = {
+        title: '',
+        picture: []
+      }, //车架号
+      ckzp03 = {
+        title: '',
+        picture: []
+      }, // 环境照片
+      ckzp04 = {
+        title: '',
+        picture: []
+      }, // 验车照片
+      ckzp05 = {
+        title: '',
+        picture: []
+      }, // 车损照片
+      ckzp06 = {
+        title: '',
+        picture: []
+      }, // 旧伤确认
+      gydz01 = {
+        title: '',
+        picture: []
+      }, // 事故证明
+      gydz02 = {
+        title: '',
+        picture: []
+      }, // 索赔申请书
+      gydz03 = {
+        title: '',
+        picture: []
+      }, // 行驶证
+      gydz04 = {
+        title: '',
+        picture: []
+      }, // 驾驶证
+      gydz05 = {
+        title: '',
+        picture: []
+      }, // 查看报告
+      gydz06 = {
+        title: '',
+        picture: []
+      }, // 个案签报
+      gydz07 = {
+        title: '',
+        picture: []
+      }, // 拒赔材料
+      gydz08 = {
+        title: '',
+        picture: []
+      }, // 从民资格证
+      gydz09 = {
+        title: '',
+        picture: []
+      }, // 法院判决书
+      gydz10 = {
+        title: '',
+        picture: []
+      }, // 调查单证
+      zfdz01 = {
+        title: '',
+        picture: []
+      }, // 收款方账户信息
+      zfdz02 = {
+        title: '',
+        picture: []
+      } // 收款方身份证明
+
+    this.data.detailed = []
+
+    checkloss.getBusinessDetail(this.data.listId,"survey",this, res => {
       if (res.status == 1) {
 
-        for (var index in res.schedule){
-          if (res.schedule[index].title == "人车合一") {
-            this.data.detailedlist.push(JSON.stringify(Object.assign({}, res.schedule.splice(index, 1))))
-
-            console.log(JSON.stringify(Object.assign({}, res.schedule.splice(index, 1))))
-          }
-
-          if (res.schedule[index].title == "车架号") {
-
-            console.log(JSON.stringify(Object.assign({}, res.schedule.splice(index, 1))))
-            this.data.detailedlist.push(JSON.stringify(Object.assign({}, res.schedule.splice(index, 1))))
-          }
-
-          // if (item.title == "环境照片") {
-          //   this.data.detailedlist.push(JSON.stringify(Object.assign({}, res.schedule.splice(index, 1))))
-          // }
-          // if (item.title == "验车照片") {
-          //   this.data.detailedlist.push(JSON.stringify(Object.assign({}, res.schedule.splice(index, 1))))
-          // }
-
-          // if (item.title == "车损照片") {
-          //   this.data.detailedlist.push(JSON.stringify(Object.assign({}, res.schedule.splice(index, 1))))
-          // }
-
-          // if (item.title == "旧伤照片") {
-          //   this.data.detailedlist.push(JSON.stringify(Object.assign({}, res.schedule.splice(index, 1))))
-          // }
-
-          // if (item.title == "事故证明") {
-          //   this.data.detailedlist.push(JSON.stringify(Object.assign({}, res.schedule.splice(index, 1))))
-          // }
-
-          // if (item.title == "索赔申请书") {
-          //   this.data.detailedlist.push(JSON.stringify(Object.assign({}, res.schedule.splice(index, 1))))
-          // }
-
-          // if (item.title == "行驶证") {
-          //   this.data.detailedlist.push(JSON.stringify(Object.assign({}, res.schedule.splice(index, 1))))
-          // }
-
-          // if (item.title == "驾驶证") {
-          //   this.data.detailedlist.push(Object.assign({}, res.schedule.splice(index, 1)))
-          // }
-
-          // if (item.title == "查勘报告") {
-          //   this.data.detailedlist.push(Object.assign({}, res.schedule.splice(index, 1)))
-          // }
-
-          // if (item.title == "个案签报") {
-          //   this.data.detailedlist.push(Object.assign({}, res.schedule.splice(index, 1)))
-          // }
-
-          // if (item.title == "拒赔材料") {
-          //   this.data.detailedlist.push(Object.assign({}, res.schedule.splice(index, 1)))
-          // }
-
-          // if (item.title == "从业资格证") {
-          //   this.data.detailedlist.push(Object.assign({}, res.schedule.splice(index, 1)))
-          // }
-
-          // if (item.title == "法院判决书") {
-          //   this.data.detailedlist.push(Object.assign({}, res.schedule.splice(index, 1)))
-          // }
-
-          // if (item.title == "调查单证") {
-          //   this.data.detailedlist.push(Object.assign({}, res.schedule.splice(index, 1)))
-          // }
-
-          // if (item.title == "收款方账户信息") {
-          //   this.data.detailedlist.push(Object.assign({}, res.schedule.splice(index, 1)))
-          // }
-
-
-          // if (item.title == "收款方身份证明") {
-          //   this.data.detailedlist.push(Object.assign({}, res.schedule.splice(index, 1)))
-          // }
-        }
-
-        console.log("hh", this.data.detailedlist, res.schedule)
-
         this.setData({
-          surveyList: res.survey,
+          surveyList: res.data,
           schedule: res.schedule,
-          detailedlist: this.data.detailedlist
         })
+
         res.schedule.forEach((item, index) => {
           if (item.title.match('到达现场')) {
             this.setData({
               serviceOperation: true
             })
           }
+
+          if (item.title.match('接单') || item.title.match('到达现场') || item.title.match('分配') || item.title.match('完成')) {
+            steps.push(item)
+            this.setData({
+              steps: steps
+            })
+          }
+
+          // 明细        
+          if (item.title.match('人车合一')) {
+            ckzp01.title = item.title
+            ckzp01.picture.push(item.picture.ckzp)
+            
+          } else if (item.title.match('车架号')) {
+
+            ckzp02.title = item.title
+            ckzp02.picture.push(item.picture.ckzp)
+            
+          } else if (item.title.match('环境照片')) {
+            ckzp03.title = item.title
+            ckzp03.picture.push(item.picture.ckzp)
+            
+          } else if (item.title.match('验车照片')) {
+            ckzp04.title = item.title
+            ckzp04.picture.push(item.picture.ckzp)
+            
+          } else if (item.title.match('车损照片')) {
+            ckzp05.title = item.title
+            ckzp05.picture.push(item.picture.ckzp)
+            
+          } else if (item.title.match('旧伤确认')) {
+            ckzp06.title = item.title
+            ckzp06.picture.push(item.picture.ckzp)
+            
+          } else if (item.title.match('事故证明')) {
+            gydz01.title = item.title
+            gydz01.picture.push(item.picture.gydz)
+            
+          } else if (item.title.match('索赔申请书')) {
+            gydz02.title = item.title
+            gydz02.picture.push(item.picture.gydz)
+            
+          } else if (item.title.match('行驶证')) {
+            gydz03.title = item.title
+            gydz03.picture.push(item.picture.gydz)
+            
+          } else if (item.title.match('驾驶证')) {
+            gydz04.title = item.title
+            gydz04.picture.push(item.picture.gydz)
+            
+          } else if (item.title.match('查勘报告')) {
+            gydz05.title = item.title
+            gydz05.picture.push(item.picture.gydz)
+            
+          } else if (item.title.match('个案签报')) {
+            gydz06.title = item.title
+            gydz06.picture.push(item.picture.gydz)
+            
+          } else if (item.title.match('拒赔材料')) {
+            gydz07.title = item.title
+            gydz07.picture.push(item.picture.gydz)
+            
+          } else if (item.title.match('从民资格证')) {
+            gydz08.title = item.title
+            gydz08.picture.push(item.picture.gydz)
+           
+          } else if (item.title.match('法院判决书')) {
+            gydz09.title = item.title
+            gydz09.picture.push(item.picture.gydz)
+           
+          } else if (item.title.match('调查单证')) {
+            gydz10.title = item.title
+            gydz10.picture.push(item.picture.gydz)
+            
+          } else if (item.title.match('收款方账户信息')) {
+            zfdz01.title = item.title
+            zfdz01.picture.push(item.picture.zfdz)
+            
+          } else if (item.title.match('收款方身份证明')) {
+            zfdz02.title = item.title
+            zfdz02.picture.push(item.picture.zfdz)
+          }
         })
+
+        this.data.detailed.push(ckzp01, ckzp02, ckzp03, ckzp04, ckzp05, ckzp06, gydz01, gydz02, gydz03, gydz04, gydz05, gydz06, gydz07, gydz08, gydz09, gydz10, zfdz01, zfdz02)
+
+        this.data.detailed.forEach((item, index) => {
+          if (item.picture.length !== 0) {
+            this.setData({
+              showDetailed: true
+            })
+          }
+        })
+        this.setData({
+          detailed: this.data.detailed
+        })
+
         this.getInsuranceList()
       }
     })
@@ -165,7 +259,7 @@ Page({
   getInsuranceList() {
     checkloss.getInsurance(res => {
       if (res.status == 1) {
-        res.insurance.forEach((item, index) => {
+        res.data.forEach((item, index) => {
           if (this.data.surveyList.insurance_id == item.id) {
             this.data.surveyList.insuranceName = item.name
             this.setData({
@@ -225,7 +319,7 @@ Page({
   // 接单
   toReceipt() {
     let id = this.data.listId
-    checkloss.businessReceipt(id, res => {
+    checkloss.businessReceipt(id,"survey",res => {
       if (res.status == 1) {
         // let surveyList = this.data.surveyList
         // let string = 'surveyList.status'
@@ -250,8 +344,10 @@ Page({
     let params = {
       title: "到达现场",
       content: app.globalData.operators ? app.globalData.operators : app.globalData.userinfor.nickname,
-      case_id: this.data.listId,
-      type: 1 // 类型（1：查勘定损，2：维修，3：拖车，4：救援，5：订单，6：代办）
+      // case_id: this.data.listId,
+      id: this.data.listId,
+      type: 1, // 类型（1：查勘定损，2：维修，3：拖车，4：救援，5：订单，6：代办）
+      key:"survey"
     }
     checkloss.toScene(params, res => {
       wx.hideLoading()
@@ -278,7 +374,8 @@ Page({
       title: '结案中...',
     })
     let params = {
-      id: this.data.listId
+      id: this.data.listId,
+      key:'survey'
     }
     checkloss.finishCase(params, res => {
       wx.hideLoading()
@@ -303,7 +400,7 @@ Page({
 
   // 更多操作
   operation() {
-    this.setData({
+    this.setData({ 
       showBottomOperation: true
     })
   },
@@ -328,7 +425,8 @@ Page({
       success: res => {
         if (res.confirm) {
           let params = {
-            id: this.data.listId
+            id: this.data.listId,
+            key:'survey'
           }
           checkloss.delBusiness(params, res => {
             if (res.status == 1) {
@@ -350,14 +448,15 @@ Page({
   },
 
   // 操作---》取消案件
-  cancelEvent(){
+  cancelEvent() {
     wx.showModal({
       title: '提示',
       content: '确定取消该案件吗？',
       success: res => {
         if (res.confirm) {
           let params = {
-            id: this.data.listId
+            id: this.data.listId,
+            key:'survey'
           }
           checkloss.cancelBusiness(params, res => {
             if (res.status == 1) {
@@ -380,31 +479,36 @@ Page({
 
   // 出现二维码格式
   showQrCode() {
-    // this.generateQrCode()
+    this.generateQrCode()
     this.setData({
       showQrCode: true,
-      erweimaimgUrl: "https://www.feecgo.com/task/evaluate/qr_code/case_id/" + this.data.listId + "/service_id/" + this.data.service_id
     })
+    // this.setData({
+    //   showQrCode: true,
+    //   erweimaimgUrl: "https://www.feecgo.com/task/evaluate/qr_code/case_id/" + this.data.listId + "/service_id/" + this.data.service_id
+    // })
   },
 
 
 
   // 生成评价二维码
   generateQrCode() {
+
     wx.request({
-      url: Config.restUrl + '/api/work/QRCode',
+      url: Config.restUrl + '/api/auth/QRCode',
       method: 'GET',
       header: {
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + app.globalData.userInfo.api_token
+        'Authorization': 'Bearer ' + app.globalData.userinfor.api_token
       }, // 默认值
       data: {
         id: this.data.listId
       },
       responseType: 'arraybuffer',
       success: (res) => {
+       
         this.setData({
-          imgUrl: wx.arrayBufferToBase64(res.data)
+          erweimaimgUrl: wx.arrayBufferToBase64(res.data)
         })
       }
     })

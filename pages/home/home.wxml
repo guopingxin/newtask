@@ -1,4 +1,9 @@
 <!--pages/home/home.wxml-->
+
+<view class="container" wx:if="{{spinShow}}">
+    <i-spin size='large' fix></i-spin>
+</view>
+
 <view class="topbg"></view>
 
 <view class='datatext'>
@@ -60,9 +65,22 @@
   </block>
 </view>
 
-<view wx:if="{{tasklist.length == 0}}" class="nullorder">  
+<view wx:if="{{tasklist.length == 0 && businessname !='查勘定损' && businessname !='疾病调查'  }}" class="nullorder">  
   <image src="/images/nullorder.png"></image>
 </view>
+<i-load-more tip="暂无数据" loading="{{ false }}" wx:if="{{tasklist.length == 0 && businessname !='查勘定损' && businessname !='疾病调查'}}"/>
+
+
+<!-- <i-steps current="{{verticalCurrent}}" direction="vertical" >
+    <i-step wx:for="{{tasklist}}" wx:key="">
+        <view slot="title">
+              {{item.report_no}}
+        </view>
+        <view slot="content">
+            {{item.car_no}}
+        </view>
+    </i-step>
+</i-steps> -->
 
 <view class="tasklist">
   <task-list tasklist="{{tasklist}}" surveymodeshow="{{surveymodeshow}}" bind:onselected="onselected" businessname="{{businessname}}" casetype="{{casetype}}"/>

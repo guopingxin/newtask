@@ -99,16 +99,16 @@
       </view>
       <view class="business-item" wx:if="{{surveyList.status > 3}}">
         <text>评价</text>
-        <text class="business-item-code" bindtap="showQrCode" wx:if="{{surveyList.comment == 0}}">二维码</text>
+        <text class="business-item-code" bindtap="showQrCode" wx:if="{{surveyList.is_comment == '未评价'}}">二维码</text>
         <text wx:if="{{surveyList.comment == 1}}">已评价</text>
       </view>
     </view>
   </view>
   <!-- 进度 -->
-  <view class="progress" wx:if="{{schedule.length !== 0}}">
+  <view class="progress" wx:if="{{schedule.length !== 0}}" style="{{!showDetailed ? 'padding-bottom: 114rpx' : ''}}">
     <view class="progress-title">进度</view>
     <view class="progress-content">
-      <view class="progress-item" wx:for="{{schedule}}" wx:key="">
+      <view class="progress-item" wx:for="{{steps}}" wx:key="">
         <view class="progress-left">
           <image src="/images/icon_light.png"></image>
         </view>
@@ -141,25 +141,18 @@
   </view>
 
   <!-- 明细 -->
-  <view class="progress">
+  <view class="progress detailed" wx:if="{{showDetailed}}">
     <view class="progress-title">明细</view>
-        <view class="progress-content">
-      <view class="progress-item" wx:for="{{detailedlist}}" wx:key="">
+    <view class="progress-content">
+      <view class="progress-item" wx:for="{{detailed}}" wx:if="{{item.title}}" wx:key="">
         <view class="progress-left">
           <image src="/images/icon_light.png"></image>
         </view>
         <view class="progress-right">
           <text>{{item.title}}</text>
-          <text>{{item.date}}</text>
-          <view class="progress-image" wx:if="{{item.picture}}">
-            <view class="progress-image-item" wx:for="{{item.picture.ckzp}}" wx:for-item="ckzpitem">
+          <view class="progress-image">
+            <view class="progress-image-item" wx:for="{{item.picture}}" wx:for-item="ckzpitem">
               <image src="{{imgUrl}}{{ckzpitem}}"></image>
-            </view>
-            <view class="progress-image-item" wx:for="{{item.picture.gydz}}" wx:for-item="gydzitem">
-              <image src="{{imgUrl}}{{gydzitem}}"></image>
-            </view>
-            <view class="progress-image-item" wx:for="{{item.picture.zfdz}}" wx:for-item="zfdzitem">
-              <image src="{{imgUrl}}{{zfdzitem}}"></image>
             </view>
           </view>
         </view>

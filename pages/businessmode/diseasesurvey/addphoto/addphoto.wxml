@@ -1,0 +1,75 @@
+<!--pages/businessmode/diseasesurvey/addphoto/addphoto.wxml-->
+<view class='container1'>
+  <camera device-position="{{cameraBack}}" flash="{{cameraFlasf}}" binderror="error" style="{{cameral}}" >
+
+  <!-- 覆盖在原生组件之上的文本视图，可覆盖的原生组件包括map、video、canvas、camera、live-player、live-pusher，只支持嵌套cover-view、cover-image -->
+  <!-- <cover-view class='left_arrows'>
+    <cover-image src='/images/left_arrows.png' bindtap='backoff'></cover-image>
+  </cover-view> -->
+
+    <!-- <cover-view class='allClassify' wx:if='{{couldTake}}'>
+      <cover-view>
+        <cover-view class='eachClassify {{btnGree[0]}}' id='0' bindtap='peAddCar'>人车合一</cover-view>
+        <cover-view class='eachClassify {{btnGree[1]}}' id='1' bindtap='frameNum'>车架号</cover-view>
+        <cover-view class='eachClassify {{btnGree[2]}}' id='2' bindtap='envior'>环境照片</cover-view>
+      </cover-view>
+      <cover-view class='eachClassify {{btnGree[3]}}' id='3' bindtap='checkPthoto'>验车照片</cover-view>
+      <cover-view class='eachClassify {{btnGree[4]}}' id='4' bindtap='carBroke'>车损照片</cover-view>
+      <cover-view class='eachClassify {{btnGree[5]}}' id='5' bindtap='oldInjury'>旧伤照片</cover-view>
+    </cover-view> -->
+    <cover-view class='faBack'>
+      <!-- <cover-view class='photoClassify' bindtap='openModal' wx:if='{{subOver&&subOver1}}'>
+        <cover-view class='choosing'>选择分类</cover-view>
+        <cover-view class='choosing' style='width:140px;height:40px;overflow:visible' catchtap='openModal'>{{choosedText}}</cover-view>
+      </cover-view> -->
+      <cover-view class='setCameral'>
+        <cover-image class='back' bindtap='shiftCamera' src='/images/camera.png'></cover-image>
+        <cover-image wx:if='{{flash.auto}}' bindtap='switchFlash' class='back flashAuto' src='/images/flashAuto.png'></cover-image>
+        <cover-image wx:if='{{flash.off}}' bindtap='switchFlash' class='back flashOff' src='/images/flashOff.png'></cover-image>
+        <cover-image wx:if='{{flash.on}}' bindtap='switchFlash' class='back flashUp' src='/images/flashUp.png'></cover-image>
+
+        <cover-view class='falshContrl' wx:if='{{falshContrl}}'>
+          <cover-view id='off' bindtap='flashOr' class='text closeText'>关闭</cover-view>
+          <cover-view id='on' bindtap='flashOr' class='text upText'>打开</cover-view>
+          <cover-view id='auto' bindtap='flashOr' class='text autoText'>自动</cover-view>
+        </cover-view>
+      </cover-view>
+    </cover-view>
+    <cover-view class='photoCell'>
+      <cover-view style='display:flex;width:33.3%;height:80px; position:fixed;left:0; bottom:0px; justify-content:center' >
+        <cover-view style='position:absolute;diasplay:flex;;bottom:26rpx;justify-content:center;width:50px;height:50px;border-radius:50%;'>
+          <cover-image wx:if='{{src==""}}' src='/images/timg.jpg' catchtap='openImg' class='{{imageRotate}}'></cover-image>
+          <cover-image wx:if='{{src!=""}}' src='{{src}}' catchtap='openImg' style='border-radius:50%;margin:0px auto;width:50px;height:50px'></cover-image>
+        </cover-view>
+      </cover-view>
+      <cover-view class='btnCell' wx:if='{{!waiting}}'>
+        <cover-image wx:if='{{camStatus=="normal"}}' class='photoBtn' src='/images/tophoto1.png' bindtap="takePhoto"></cover-image>
+        <cover-image wx:if='{{camStatus=="right"}}' class='photoBtn' src='/images/tophotoy.png' bindtap="takePhoto"></cover-image>
+        <cover-image wx:if='{{camStatus=="left"}}' class='photoBtn' src='/images/tophotoz.png' bindtap="takePhoto"></cover-image>
+      </cover-view>
+      <cover-view class='btnCell' wx:if='{{waiting}}'>
+        <cover-image class='photoBtn' src='/images/tophoto.png'></cover-image>
+      </cover-view>
+    </cover-view>
+    <cover-view style='display:flex;width:33.3%;height:80px;text-align:center;position:fixed;right:0px;bottom:0px; justify-content:center; align-items:center' >
+      <cover-image wx:if='{{subOver}}' bindtap='tosubmit' src='/images/ok.png' style='position:fixed;bottom:15px;margin:0px auto;width:50px;height:50px;'></cover-image>
+      <cover-image wx:if='{{!subOver}}' src='/images/ok1.png' style='position:fixed;bottom:15px;margin:0px auto;width:50px;height:50px;'></cover-image>
+    </cover-view>
+  </camera>
+  <view class='proCell' wx:if='{{ifPro}}'>
+    正在上传
+    <progress percent="{{progressPer}}" class='progress' />
+  </view>
+</view>
+<canvas style="width:{{imageswidth}}px;height:{{imageheight}}px;top:{{imageheight*2}}px;"  canvas-id="myCanvas" animation="{{animation}}" hidden="{{showcanvas}}"></canvas>
+<!-- <view style='font-size:14px;text-align:center;display:inline-block;width:100%'>
+  <text>加载中，请稍等...</text>
+</view> -->
+<view class='modalInforDe' wx:if='{{deleteMODAL}}'>
+  <view class='modalInforContentDe'>
+    <view class='InforDe'>图片还在上传中，确定退出？</view>
+    <view class='redInfor'>tip:退出后，所有图片将丢失</view>
+    <view class='confirmDe yesDe' bindtap='confirmDelete'> 确认</view>
+    <view class='confirmDe noDe' bindtap='cancelDeleteModal'> 取消</view>
+  </view>
+</view>

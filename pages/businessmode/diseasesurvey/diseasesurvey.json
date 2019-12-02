@@ -1,6 +1,7 @@
 {
   "usingComponents": {
-    "frame-mode":"/components/framemode/framemode"
+    "frame-mode":"/components/framemode/framemode",
+    "i-spin": "/dist/spin/index"
   },
   "navigationBarTitleText": "疾病调查"
 }

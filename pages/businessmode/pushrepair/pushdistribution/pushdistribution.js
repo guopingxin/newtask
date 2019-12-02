@@ -25,7 +25,7 @@ Page({
     pushrepair.taskslist(res=>{
       if(res.status == 1){
         that.setData({
-          taskslist:res.task
+          taskslist:res.data
         })
       }
     })
@@ -53,29 +53,31 @@ Page({
 
       if (that.data.mode == 'checkloss'){
 
-        var url = "/task/survey/allot"
+        var url = "/api/work/allot"
+        var key = 'survey'
 
       }else{
 
         var url = "/task/push/allot"
       }
 
-      pushrepair.allot(url,that.data.id, e.detail.value.radiogroup,res=>{
+      pushrepair.allot(url, that.data.id, e.detail.value.radiogroup,key,res=>{
         if(res.status == 1){
           wx.showToast({
             title: '分配成功!',
             icon: 'none',
             duration: 1000
           })
-          // setTimeout(function(){
-          //   wx.navigateBack({
-          //     delta:1
-          //   })
-          // },1000)
+          setTimeout(function(){
+            // wx.navigateBack({
+            //   delta:1
+            // })
+            wx.switchTab({
+              url: '/pages/home/home',
+            })
+          },1000)
 
-          wx.switchTab({
-            url: '/pages/home/home',
-          })
+          
         }else{
           wx.showToast({
             title: res.msg,

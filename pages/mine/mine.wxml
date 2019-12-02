@@ -4,7 +4,7 @@
   <view class="usercontent" bindtap="personalcenter">
     <view class="aperture1">
       <view class="aperture2">
-        <image src="{{hostName}}/uploads/face/{{userinfor.face}}" wx:if="{{userinfor.face}}"></image>
+        <image src="{{hostName}}/uploads/{{userinfor.face}}" wx:if="{{userinfor.face}}"></image>
         <image src="/images/head-portrait.png" wx:else></image>
       </view>
     </view>

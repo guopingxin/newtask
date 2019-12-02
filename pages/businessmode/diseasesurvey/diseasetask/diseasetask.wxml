@@ -1,0 +1,480 @@
+<view class="container">
+  <view class="title">{{title}}</view>
+
+  <view wx:for="{{tasklist}}" wx:key="" wx:for-item="item" wx:for-index="index">
+    <!-- 第一个样式 (面访病患) -->
+    <view wx:if="{{taskId<3}}">
+      <view class="recordwhole">
+        <view class="record" bindtap="toEdit" data-sicknessdata="{{item.data}}" data-index="{{index}}">
+          <i-icon type="unfold" size="24" wx:if="{{isdetail && recordindex == index}}" />
+          <i-icon type="enter" size="24" wx:else/>
+          <text>记录{{index+1}}</text>
+          <view class="delete" catchtap="detelerecord" data-taskid="{{item.id}}">删除</view>
+        </view>
+
+        <view wx:if="{{isdetail && recordindex == index}}">
+          <view class="interviewtime">
+            <label>面访时间:</label>
+            <text>{{sicknessdata.face_date}}</text>
+          </view>
+
+          <view class="interviewtime">
+            <label>面访地址:</label>
+            <text>{{sicknessdata.face_address}}</text>
+          </view>
+
+          <view class="interviewtime">
+            <label>公估人姓名:</label>
+            <text>{{sicknessdata.task_name}}</text>
+          </view>
+
+          <view class="interviewtime">
+            <label>面访对象与患病成员关系:</label>
+            <text>{{sicknessdata.face_relation}}</text>
+          </view>
+
+          <view class="interviewtime">
+            <label>面访对象姓名:</label>
+            <text>{{sicknessdata.face_name}}</text>
+          </view>
+
+          <view class="interviewtime">
+            <label>是否阳性:</label>
+            <text wx:if="{{sicknessdata.is_positive == 1}}">阳性</text>
+            <text wx:else>非阳性</text>
+          </view>
+
+          <view class="interviewtime modestyle">
+            <label>阳性说明:</label>
+            <textarea type="text" placeholder="请输入阳性说明" placeholder-class="assessor1" value="{{sicknessdata.positive_state}}" disabled="false"></textarea>
+          </view>
+
+          <view class="interviewtime modestyle">
+            <label>面访经过说明:</label>
+            <textarea type="text" placeholder="请输入面访经过说明" placeholder-class="assessor1" value="{{sicknessdata.face_state}}" disabled="false"></textarea>
+          </view>
+
+          <view class="investigation">
+            <label>调查材料:</label>
+            <view class="datalist">
+              <view wx:for="{{sicknessdata.image}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+                <image src="{{hosturl}}/uploads/{{item}}" class="pic"></image>
+                <!-- <image src="/images/bean.png" class="pic"></image> -->
+              </view>
+            </view>
+            <view class="datalist">
+              <view wx:for="{{sicknessdata.audio}}" wx:key="" class="voicestyle" data-index="{{index}}" bindtap="playvoice" data-voicesrc="{{item}}">
+                <image src="/images/voice.png" class="pic"></image>
+                <view wx:if="{{index<9}}">语音文件 0{{index+1}}</view>
+                <view wx:else>{{index+1}}</view>
+              </view>
+            </view>
+          </view>
+
+        </view>
+      </view>
+    </view>
+
+
+    <!-- 第二个样式(排查) -->
+    <view wx:elif="{{taskId<9}}">
+      <view class="recordwhole">
+        <view class="record" bindtap="toEdit" data-sicknessdata="{{item.data}}" data-index="{{index}}">
+          <i-icon type="unfold" size="24" wx:if="{{isdetail && recordindex == index}}" />
+          <i-icon type="enter" size="24" wx:else/>
+          <text>记录{{index+1}}</text>
+          <view class="delete" catchtap="detelerecord" data-taskid="{{item.id}}">删除</view>
+        </view>
+
+        <view wx:if="{{isdetail && recordindex == index}}">
+          <view class="interviewtime">
+            <label>医院名称:</label>
+            <text>{{sicknessdata.hospital}}</text>
+          </view>
+
+          <view class="interviewtime">
+            <label>排查时间:</label>
+            <text>{{sicknessdata.screen_date}}</text>
+          </view>
+
+          <view class="interviewtime">
+            <label>排查类型:</label>
+            <text wx:if="{{sicknessdata.screen_type == 1}}">门诊</text>
+            <text wx:elif="{{sicknessdata.screen_type == 2}}">住院</text>
+            <text wx:else>门诊及医院</text>
+          </view>
+
+          <view class="interviewtime">
+            <label>排查科室:</label>
+            <text>{{sicknessdata.screen_department}}</text>
+          </view>
+
+          <view class="interviewtime">
+            <label>是否阳性:</label>
+            <text wx:if="{{sicknessdata.is_positive == 1}}">阳性</text>
+            <text wx:else>非阳性</text>
+          </view>
+
+          <view class="interviewtime modestyle">
+            <label>阳性说明:</label>
+            <textarea type="text" placeholder="请输入阳性说明" placeholder-class="assessor1" value="{{sicknessdata.positive_state}}" disabled="false"></textarea>
+          </view>
+
+          <view class="interviewtime modestyle">
+            <label>医院排查结论:</label>
+            <textarea type="text" placeholder="请输入医院排查结论" placeholder-class="assessor1" value="{{sicknessdata.screen_conclusion}}" disabled="false"></textarea>
+          </view>
+
+          <view class="investigation">
+            <label>调查材料:</label>
+            <view class="datalist">
+              <view wx:for="{{sicknessdata.image}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+                <image src="{{hosturl}}/uploads/{{item}}" class="pic"></image>
+                <!-- <image src="/images/bean.png" class="pic"></image> -->
+              </view>
+            </view>
+            <view class="datalist">
+              <view wx:for="{{sicknessdata.audio}}" wx:key="" class="voicestyle" data-index="{{index}}" bindtap="playvoice" data-voicesrc="{{item}}">
+                <image src="/images/voice.png" class="pic" ></image>
+                <view wx:if="{{index<9}}">语音文件 0{{index+1}}</view>
+                <view wx:else>{{index+1}}</view>
+              </view>
+            </view>
+          </view>
+
+        </view>
+      </view>
+    </view>
+
+    <!-- 第三个样式(走访) -->
+    <view wx:elif="{{taskId<17}}">
+      <view class="recordwhole">
+        <view class="record" bindtap="toEdit" data-sicknessdata="{{item.data}}" data-index="{{index}}">
+          <i-icon type="unfold" size="24" wx:if="{{isdetail && recordindex == index}}" />
+          <i-icon type="enter" size="24" wx:else/>
+          <text>记录{{index+1}}</text>
+          <view class="delete" catchtap="detelerecord" data-taskid="{{item.id}}">删除</view>
+        </view>
+
+        <view wx:if="{{isdetail && recordindex == index}}">
+          <view class="interviewtime">
+            <label>走访对象:</label>
+            <text>{{sicknessdata.visit_name}}</text>
+          </view>
+
+          <view class="interviewtime">
+            <label>走访时间:</label>
+            <text>{{sicknessdata.visit_date}}</text>
+          </view>
+
+          <view class="interviewtime">
+            <label>走访地址:</label>
+            <text>{{sicknessdata.visit_address}}</text>
+          </view>
+
+          <view class="interviewtime">
+            <label>是否阳性:</label>
+            <text wx:if="{{sicknessdata.is_positive == 1}}">阳性</text>
+            <text wx:else>非阳性</text>
+          </view>
+
+          <view class="interviewtime modestyle">
+            <label>阳性说明:</label>
+            <textarea type="text" placeholder="请输入阳性说明" placeholder-class="assessor1" value="{{sicknessdata.positive_state}}" disabled="false"></textarea>
+          </view>
+
+          <view class="interviewtime modestyle">
+            <label>走访结论:</label>
+            <textarea type="text" placeholder="请输入走访结论" placeholder-class="assessor1" value="{{sicknessdata.visit_conclusion}}" disabled="false"></textarea>
+          </view>
+
+          <view class="investigation">
+            <label>调查材料:</label>
+            <view class="datalist">
+              <view wx:for="{{sicknessdata.image}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+                <image src="{{hosturl}}/uploads/{{item}}" class="pic"></image>
+                <!-- <image src="/images/bean.png" class="pic"></image> -->
+              </view>
+            </view>
+            <view class="datalist">
+              <view wx:for="{{sicknessdata.audio}}" wx:key="" class="voicestyle" data-index="{{index}}" bindtap="playvoice" data-voicesrc="{{item}}">
+                <image src="/images/voice.png" class="pic"></image>
+                <view wx:if="{{index<9}}">语音文件 0{{index+1}}</view>
+                <view wx:else>{{index+1}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 第四个样式 (商保排查)-->
+    <view wx:elif="{{taskId == 17}}">
+      <view class="recordwhole">
+        <view class="record" bindtap="toEdit" data-sicknessdata="{{item.data}}" data-index="{{index}}">
+          <i-icon type="unfold" size="24" wx:if="{{isdetail && recordindex == index}}" />
+          <i-icon type="enter" size="24" wx:else/>
+          <text>记录{{index+1}}</text>
+          <view class="delete" catchtap="detelerecord" data-taskid="{{item.id}}">删除</view>
+        </view>
+
+        <view wx:if="{{isdetail && recordindex == index}}">
+          <view class="interviewtime">
+            <label>公司名称:</label>
+            <text>{{sicknessdata.company}}</text>
+          </view>
+
+          <view class="interviewtime modestyle">
+            <label>商保排查结论:</label>
+            <textarea type="text" placeholder="请输入商保排查结论" placeholder-class="assessor1" value="{{sicknessdata.screen_conclusion}}" disabled="false"></textarea>
+          </view>
+
+          <view class="interviewtime">
+            <label>互助排查名称:</label>
+            <text>{{sicknessdata.help_screen_name}}</text>
+          </view>
+
+          <view class="interviewtime modestyle">
+            <label>互助排查结论:</label>
+            <textarea type="text" placeholder="请输入互助排查结论" placeholder-class="assessor1" value="{{sicknessdata.help_screen_conclusion}}" disabled="false"></textarea>
+          </view>
+
+          <view class="investigation">
+            <label>调查材料:</label>
+            <view class="datalist">
+              <view wx:for="{{sicknessdata.image}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+                <image src="{{hosturl}}/uploads/{{item}}" class="pic"></image>
+                <!-- <image src="/images/bean.png" class="pic"></image> -->
+              </view>
+            </view>
+            <view class="datalist">
+              <view wx:for="{{sicknessdata.audio}}" wx:key="" class="voicestyle" data-index="{{index}}" bindtap="playvoice" data-voicesrc="{{item}}">
+                <image src="/images/voice.png" class="pic"></image>
+                <view wx:if="{{index<9}}">语音文件 0{{index+1}}</view>
+                <view wx:else>{{index+1}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 第五个样式 (社保排查) -->
+    <view wx:elif="{{taskId == 18}}">
+      <view class="recordwhole">
+        <view class="record" bindtap="toEdit" data-sicknessdata="{{item.data}}" data-index="{{index}}">
+          <i-icon type="unfold" size="24" wx:if="{{isdetail && recordindex == index}}" />
+          <i-icon type="enter" size="24" wx:else/>
+          <text>记录{{index+1}}</text>
+          <view class="delete" catchtap="detelerecord" data-taskid="{{item.id}}">删除</view>
+        </view>
+
+        <view wx:if="{{isdetail && recordindex == index}}">
+          <view class="interviewtime">
+            <label>社保局名称:</label>
+            <text>{{sicknessdata.social_security}}</text>
+          </view>
+
+          <view class="interviewtime">
+            <label>排查时间:</label>
+            <text>{{sicknessdata.screen_date}}</text>
+          </view>
+
+          <view class="interviewtime">
+            <label>是否阳性:</label>
+            <text wx:if="{{sicknessdata.is_positive == 1}}">阳性</text>
+            <text wx:else>非阳性</text>
+          </view>
+
+          <view class="interviewtime modestyle">
+            <label>阳性说明:</label>
+            <textarea type="text" placeholder="请输入阳性说明" placeholder-class="assessor1" value="{{sicknessdata.positive_state}}" disabled="false"></textarea>
+          </view>
+
+          <view class="interviewtime modestyle">
+            <label>社保排查结论:</label>
+            <textarea type="text" placeholder="请输入社保排查结论" placeholder-class="assessor1" value="{{sicknessdata.social_security_screen_conclusion}}" disabled="false"></textarea>
+          </view>
+
+          <view class="investigation">
+            <label>调查材料:</label>
+            <view class="datalist">
+              <view wx:for="{{sicknessdata.image}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+                <image src="{{hosturl}}/uploads/{{item}}" class="pic"></image>
+                <!-- <image src="/images/bean.png" class="pic"></image> -->
+              </view>
+            </view>
+            <view class="datalist">
+              <view wx:for="{{sicknessdata.audio}}" wx:key="" class="voicestyle" data-index="{{index}}" bindtap="playvoice" data-voicesrc="{{item}}">
+                <image src="/images/voice.png" class="pic"></image>
+                <view wx:if="{{index<9}}">语音文件 0{{index+1}}</view>
+                <view wx:else>{{index+1}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 第六个样式(体检机构排查) -->
+    <view wx:elif="{{taskId == 19}}">
+      <view class="recordwhole">
+        <view class="record" bindtap="toEdit" data-sicknessdata="{{item.data}}" data-index="{{index}}">
+          <i-icon type="unfold" size="24" wx:if="{{isdetail && recordindex == index}}" />
+          <i-icon type="enter" size="24" wx:else/>
+          <text>记录{{index+1}}</text>
+          <view class="delete" catchtap="detelerecord" data-taskid="{{item.id}}">删除</view>
+        </view>
+
+        <view wx:if="{{isdetail && recordindex == index}}">
+          <view class="interviewtime">
+            <label>体检机构名称:</label>
+            <text>{{sicknessdata.medical_screen}}</text>
+          </view>
+
+          <view class="interviewtime">
+            <label>排查时间:</label>
+            <text>{{sicknessdata.screen_date}}</text>
+          </view>
+          <view class="interviewtime">
+            <label>是否阳性:</label>
+            <text wx:if="{{sicknessdata.is_positive == 1}}">阳性</text>
+            <text wx:else>非阳性</text>
+          </view>
+
+          <view class="interviewtime modestyle">
+            <label>阳性说明:</label>
+            <textarea type="text" placeholder="请输入阳性说明" placeholder-class="assessor1" value="{{sicknessdata.positive_state}}" disabled="false"></textarea>
+          </view>
+
+          <view class="interviewtime modestyle">
+            <label>体检排查结论:</label>
+            <textarea type="text" placeholder="请输入体检排查结论" placeholder-class="assessor1" value="{{sicknessdata.medical_screen_conclusion}}"></textarea>
+          </view>
+
+          <view class="investigation">
+            <label>调查材料:</label>
+            <view class="datalist">
+              <view wx:for="{{sicknessdata.image}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+                <image src="{{hosturl}}/uploads/{{item}}" class="pic"></image>
+                <!-- <image src="/images/bean.png" class="pic"></image> -->
+              </view>
+            </view>
+            <view class="datalist">
+              <view wx:for="{{sicknessdata.audio}}" wx:key="" class="voicestyle" data-index="{{index}}" bindtap="playvoice" data-voicesrc="{{item}}">
+                <image src="/images/voice.png" class="pic"></image>
+                <view wx:if="{{index<9}}">语音文件 0{{index+1}}</view>
+                <view wx:else>{{index+1}}</view>
+              </view>
+            </view>
+          </view>
+
+        </view>
+      </view>
+    </view>
+
+    <!-- 第七个样式(事故地点排查) -->
+    <view wx:elif="{{taskId == 20}}">
+      <view class="recordwhole">
+        <view class="record" bindtap="toEdit" data-sicknessdata="{{item.data}}" data-index="{{index}}">
+          <i-icon type="unfold" size="24" wx:if="{{isdetail && recordindex == index}}" />
+          <i-icon type="enter" size="24" wx:else/>
+          <text>记录{{index+1}}</text>
+          <view class="delete" catchtap="detelerecord" data-taskid="{{item.id}}">删除</view>
+        </view>
+        <view wx:if="{{isdetail && recordindex == index}}">
+          <view class="interviewtime">
+            <label>排查时间:</label>
+            <text>{{sicknessdata.screen_date}}</text>
+          </view>
+
+          <view class="interviewtime">
+            <label>事故地址:</label>
+            <text>{{sicknessdata.accident_address}}</text>
+          </view>
+
+          <view class="interviewtime modestyle">
+            <label>排查结论:</label>
+            <textarea type="text" placeholder="请输入排查结论" placeholder-class="assessor1" value="{{sicknessdata.screen_conclusion}}" disabled="false"></textarea>
+          </view>
+
+          <view class="investigation">
+            <label>调查材料:</label>
+            <view class="datalist">
+              <view wx:for="{{sicknessdata.image}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+                <image src="{{hosturl}}/uploads/{{item}}" class="pic"></image>
+                <!-- <image src="/images/bean.png" class="pic"></image> -->
+              </view>
+            </view>
+            <view class="datalist">
+              <view wx:for="{{sicknessdata.audio}}" wx:key="" class="voicestyle" data-index="{{index}}" bindtap="playvoice" data-voicesrc="{{item}}">
+                <image src="/images/voice.png" class="pic"></image>
+                <view wx:if="{{index<9}}">语音文件 0{{index+1}}</view>
+                <view wx:else>{{index+1}}</view>
+              </view>
+            </view>
+          </view>
+
+        </view>
+      </view>
+    </view>
+
+    <!-- 第八个样式(事故处理机构排查) -->
+    <view wx:elif="{{taskId == 21}}">
+      <view class="recordwhole">
+        <view class="record" bindtap="toEdit" data-sicknessdata="{{item.data}}" data-index="{{index}}">
+          <i-icon type="unfold" size="24" wx:if="{{isdetail && recordindex == index}}" />
+          <i-icon type="enter" size="24" wx:else/>
+          <text>记录{{index+1}}</text>
+          <view class="delete" catchtap="detelerecord" data-taskid="{{item.id}}">删除</view>
+        </view>
+
+        <view wx:if="{{isdetail && recordindex == index}}">
+          <view class="interviewtime">
+            <label>排查时间:</label>
+            <text>{{sicknessdata.screen_date}}</text>
+          </view>
+
+          <view class="interviewtime">
+            <label>处理机构:</label>
+            <text>{{sicknessdata.deal_org}}</text>
+          </view>
+
+          <view class="interviewtime modestyle">
+            <label>排查结论:</label>
+            <textarea type="text" placeholder="请输入排查结论" placeholder-class="assessor1" value="{{sicknessdata.screen_conclusion}}"></textarea>
+          </view>
+
+          <view class="investigation">
+            <label>调查材料:</label>
+            <view class="datalist">
+              <view wx:for="{{sicknessdata.image}}" wx:key="" class="imageitem" catchtap="previewImage" data-index="{{index}}">
+                <image src="{{hosturl}}/uploads/{{item}}" class="pic"></image>
+                <!-- <image src="/images/bean.png" class="pic"></image> -->
+              </view>
+            </view>
+            <view class="datalist">
+              <view wx:for="{{sicknessdata.audio}}" wx:key="" class="voicestyle" data-index="{{index}}" bindtap="playvoice" data-voicesrc="{{item}}">
+                <image src="/images/voice.png" class="pic"></image>
+                <view wx:if="{{index<9}}">语音文件 0{{index+1}}</view>
+                <view wx:else>{{index+1}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+
+
+  <canvas class='canvas' style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;top:{{canvasHeight*2}}px;" canvas-id="firstCanvas" hidden="{{showcanvas}}"></canvas>
+
+
+  <view class="rejectmode" wx:if="{{reject!='null'}}">
+    <text>驳回意见:</text>
+    <text>{{reject}}</text>
+  </view>
+  <view class="add" bindtap="addRecord">添加记录</view>
+</view>
+

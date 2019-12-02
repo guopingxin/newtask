@@ -36,7 +36,8 @@ Page({
     console.log(options)
     this.data.id = options.id
     this.setData({
-      imgUrl: hostName +'/uploads/work/'
+      // imgUrl: hostName +'/uploads/work/'
+      imgUrl:"http://cdn.feecgo.com/uploads/"
     })
   },
 
@@ -81,20 +82,24 @@ Page({
         for (let i = 0; i < res.tempFilePaths.length; i++) {
           // this.upload()
           wx.uploadFile({
-            url: hostName + '/task/base/uploads',
+            // url: hostName + '/task/base/uploads',
+            url: hostName + '/api/auth/upload',
             filePath: res.tempFilePaths[i],
-            name: 'image',
+            // name: 'image',
+            name:'file',
             header: {
               'Content-Type': 'application/x-www-form-urlencoded',
               'Cookie': 'PHPSESSID=' + app.globalData.sessionId
             },
             success: (res) => {
               wx.hideLoading()
+
               let data = JSON.parse(res.data)
 
-              console.log("dddd",data);
+              console.log(data);
+
               if (data.status == 1) {
-                imageList.push(data.file_name)
+                imageList.push(data.data.filename)
                 let string = 'addList[' + imageListIndex + '].imageList'
                 this.setData({
                   [string]: imageList

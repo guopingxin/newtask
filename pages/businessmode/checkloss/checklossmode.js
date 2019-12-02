@@ -9,8 +9,10 @@ class Checkloss extends Base{
   //获取保险公司
   getInsurance(callback) {
     var params = {
-      url: '/task/index/systemInsurance',
+      // url: '/task/index/systemInsurance',
+      url:'/api/auth/insurance',
       type: 'GET',
+      auth:true,
       sCallback: callback
     }
     this.request(params)
@@ -19,9 +21,10 @@ class Checkloss extends Base{
   // 编辑业务
   editBusiness(param, callback) {
     var params = {
-      url: '/task/survey/edit',
+      url: '/api/opt/work/edit',
       type: 'POST',
       data: param,
+      auth:true,
       sCallback: callback
     }
     this.request(params)
@@ -30,7 +33,9 @@ class Checkloss extends Base{
   // 增加业务
   addBusiness(param, callback) {
     var params = {
-      url: '/task/survey/add',
+      // url: '/task/survey/add',
+      url:'/api/opt/work/increase',
+      auth:true,
       type: 'POST',
       data: param,
       sCallback: callback
@@ -39,26 +44,32 @@ class Checkloss extends Base{
   }
 
   // 业务详情
-  getBusinessDetail(id, callback) {
+  getBusinessDetail(id, key,that,callback) {
     var params = {
-      url: '/task/survey/info',
+      // url: '/task/survey/info',
+      url:'/api/opt/work/info',
       type: 'GET',
       data: {
-        id: id
+        id: id,
+        key: key,
+        type: that.data.businessId
       },
+      auth:true,
       sCallback: callback
     }
     this.request(params)
   }
 
   // 接单
-  businessReceipt(id,callback) {
+  businessReceipt(id,key,callback) {
     var params = {
-      url: '/task/survey/receive',
+      url: '/api/opt/work/accept',
       type: 'GET',
       data: {
-        id: id
+        id: id,
+        key:key
       },
+      auth:true,
       sCallback: callback
     }
     this.request(params)
@@ -67,9 +78,11 @@ class Checkloss extends Base{
   // 到达现场
   toScene(param, callback) {
     var params = {
-      url: '/task/survey/schedule',
-      type: 'POST',
+      // url: '/task/survey/schedule',
+      url:'/api/opt/work/arrive',
+      type: 'GET',
       data: param,
+      auth:true,
       sCallback: callback
     }
     this.request(params)
@@ -78,9 +91,11 @@ class Checkloss extends Base{
   // 查勘定损---》添加明细
   addDetailed(param, callback) {
     var params = {
-      url: '/task/survey/schedule',
+      // url: '/task/survey/schedule',
+      url:'/api/opt/work/schedule',
       type: 'POST',
       data: param,
+      auth:true,
       sCallback: callback
     }
     this.request(params)
@@ -89,9 +104,10 @@ class Checkloss extends Base{
   // 完成结案
   finishCase(param, callback) {
     var params = {
-      url: '/task/survey/finish',
-      type: 'GET',
+      url: '/api/opt/work/finish',
+      type: 'POST',
       data: param,
+      auth:true,
       sCallback: callback
     }
     this.request(params)
@@ -100,7 +116,7 @@ class Checkloss extends Base{
   //查勘定损分配作业员
   allot(id, taskid, callback) {
     var params = {
-      url: '/task/survey/allot',
+      url: '/task/opt/survey/allot',
       type: 'POST',
       data: {
         id: id,
@@ -114,9 +130,10 @@ class Checkloss extends Base{
   //查勘定损删除
   delBusiness(param, callback){
     var params = {
-      url: '/task/survey/delete',
+      url: '/api/opt/work/remove',
       type: 'GET',
       data: param,
+      auth:true,
       sCallback: callback
     }
     this.request(params)
@@ -125,9 +142,10 @@ class Checkloss extends Base{
   //查勘定损取消
   cancelBusiness(param, callback){
     var params = {
-      url: '/task/survey/cancel',
-      type: 'GET',
+      url: '/api/opt/work/cancel',
+      type: 'POST',
       data: param,
+      auth:true,
       sCallback: callback
     }
     this.request(params)

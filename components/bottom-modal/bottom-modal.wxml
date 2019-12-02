@@ -9,7 +9,7 @@
       <i-icon class="icon" type="trash_fill" size="18" />
       <text>删除</text>
     </view>
-    <view class="bottom-item" bindtap="toCancel">
+    <view class="bottom-item" bindtap="toCancel" wx:if="{{status != 6}}">
       <i-icon class="icon" type="accessory" size="18" />
       <text>取消</text>
     </view>

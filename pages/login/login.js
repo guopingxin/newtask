@@ -17,6 +17,9 @@ Page({
    */
   onLoad: function (options) {
     
+    var ddd = ",9XIcg0RmNR5Z6LxoAlZ2QqgcB3E8URHWDoz7uvOC.mpga";
+    ddd = ddd.substring(1,ddd.length);
+    console.log("ddd",ddd);
   },
 
   onShow:function(){
@@ -40,7 +43,7 @@ Page({
         wx.setStorageSync('userphone', res.data.mobile)
         wx.setStorageSync('userpwd', that.data.psw)
         app.globalData.userinfor = res.data;
-        app.globalData.sessionId = res.data.session_id;
+        // app.globalData.sessionId = res.data.session_id;
         that.data.islogin = true;
         
         wx.switchTab({

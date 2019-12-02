@@ -58,6 +58,9 @@ Page({
   //退出登录
   logOutL: function() {
     var that = this;
+    that.setData({
+      logOut: false
+    })
     personalcenter.logOut(res => {
       if (res.status == 1) {
         wx.removeStorageSync('userphone');
@@ -127,9 +130,8 @@ Page({
     wx.login({
       success: res => {
         personalcenter.bindWX(res.code, response => {
-          if (res.status == 1) {
-
-            app.globalData.openid = res.openid;
+          if (response.status == 1) {
+            // app.globalData.openid = response.data;
             wx.showToast({
               title: '绑定成功',
               success: res => {
@@ -143,10 +145,10 @@ Page({
             })
             var temp = 'userinfor.openid'
             that.setData({
-              [temp]: true
+              [temp]: response.data
             })
 
-          } else if (res.status == -2) {
+          } else if (response.status == -2) {
             wx.showModal({
               title: '该微信已被绑定到其他帐号',
               icon: 'none',

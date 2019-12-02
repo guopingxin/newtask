@@ -9,13 +9,14 @@ class Editpsw extends Base{
   //修改密码
   setPassword(that,callback){
     var params = {
-      url: '/task/index/setPassword',
+      url: '/api/opt/index/changePwd',
       type: 'POST',
       data: {
-        oldPassword: that.data.older,
-        newPassword: that.data.new,
-        repPassword: that.data.renew,
+        old_password: that.data.older,
+        password: that.data.new,
+        repeat_password: that.data.renew,
       },
+      auth:true,
       sCallback: callback
     }
     this.request(params);

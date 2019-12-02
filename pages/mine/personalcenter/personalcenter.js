@@ -31,7 +31,7 @@ Page({
 
     if (userinfor.face) {
       that.setData({
-        headimg: Config.restUrl + "/uploads/face/" + userinfor.face
+        headimg: Config.restUrl + "/uploads/" + userinfor.face
       })
     } else {
       that.setData({
@@ -114,24 +114,32 @@ Page({
 
     that.data.id = that.data.userinfor.id;
 
+    wx.showLoading({
+      title: '正在努力上传中...',
+    })
+
     if (that.data.headimg1) {
 
-      personalcenter.upFace("/task/index/upFace",that.data.headimg1, res => {
+      //  /task/index/upFace
+      personalcenter.upFace("/api/auth/upload",that.data.headimg1, res => {
 
         console.log("res", res);
         var jsonStr = res.data;
         jsonStr = jsonStr.replace(" ", "");
         jsonStr = jsonStr.replace(/\ufeff/g, ""); //重点
         res.data = JSON.parse(jsonStr);
+
+
         if (res.data.status == 1) {
-          that.data.file_name = res.data.file_name;
+          that.data.file_name = res.data.data.filename;
           personalcenter.taskEdit(that, res => {
-            console.log(res)
+            wx.hideLoading();
             if (res.status == 1) {
 
-              that.data.userinfor.face = that.data.file_name;
+              that.data.userinfor.face = 'face/'+that.data.file_name;
               that.data.userinfor.nickname = that.data.name;
-              wx.setStorageSync("userinfor", that.data.userinfor);
+              // wx.setStorageSync("userinfor", that.data.userinfor);
+              app.globalData.userinfor = that.data.userinfor
 
               wx.showToast({
                 title: '修改成功!',

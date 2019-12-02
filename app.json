@@ -1,8 +1,11 @@
 {
   "pages": [
     "pages/login/login",
+    "pages/businessmode/diseasesurvey/adddiseasetask/adddiseasetask",
+    "pages/businessmode/diseasesurvey/diseasetask/diseasetask",
     "pages/businessmode/diseasesurvey/diseasesurvey",
     "pages/businessmode/diseasesurvey/diseaseupload/diseaseupload",
+    "pages/businessmode/diseasesurvey/addphoto/addphoto",
     "pages/home/home",
     "pages/mine/mine",
     "pages/mine/datastatistics/datastatistics",
